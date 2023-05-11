@@ -14,4 +14,12 @@ export class Cell {
   public isEmpty(): boolean {
     return this.value === "";
   }
+
+  public setValue(value: CellValue): void {
+    this.value = value;
+  }
+
+  public getValue(): CellValue {
+    return this.value;
+  }
 }
