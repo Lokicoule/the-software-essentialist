@@ -7,5 +7,11 @@ describe("Game", () => {
 
       expect(game.getBoard().isEmpty()).toBeTruthy();
     });
+
+    it("should have the current player as X", () => {
+      const game = new Game();
+
+      expect(game.getCurrentPlayer()).toEqual("X");
+    });
   });
 });
