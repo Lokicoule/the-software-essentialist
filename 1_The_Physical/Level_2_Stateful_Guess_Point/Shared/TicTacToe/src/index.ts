@@ -9,6 +9,10 @@ export class Board {
     ];
   }
 
+  public isEmpty(): boolean {
+    return this.cells.every((row) => row.every((cell) => cell === ""));
+  }
+
   public getCells(): string[][] {
     return this.cells;
   }

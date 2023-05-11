@@ -10,6 +10,7 @@ describe("Board", () => {
         ["", "", ""],
         ["", "", ""],
       ]);
+      expect(board.isEmpty()).toBeTruthy();
     });
   });
 
