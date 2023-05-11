@@ -23,4 +23,15 @@ describe("Board", () => {
 
     expect(board.getCells()[row][column]).toEqual(value);
   });
+
+  it.each([
+    [0, 0, "X"],
+    [1, 2, "O"],
+  ])("should get the cell value position (%i, %i)", (row, column, value) => {
+    const board = new Board();
+
+    board.setCell(row, column, value);
+
+    expect(board.getCell(row, column)).toEqual(value);
+  });
 });
