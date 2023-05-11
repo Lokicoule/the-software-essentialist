@@ -1,4 +1,4 @@
-type CellValue = "X" | "O" | "";
+export type CellValue = "X" | "O" | "";
 
 export class Cell {
   private value: CellValue;

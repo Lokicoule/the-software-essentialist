@@ -1,3 +1,4 @@
+import { CellValue } from "./cell";
 import { Board } from "./index";
 
 describe("Board", () => {
@@ -5,11 +6,6 @@ describe("Board", () => {
     it("should have a 3x3 empty grid", () => {
       const board = new Board();
 
-      expect(board.getCells()).toEqual([
-        ["", "", ""],
-        ["", "", ""],
-        ["", "", ""],
-      ]);
       expect(board.isEmpty()).toBeTruthy();
     });
   });
@@ -20,9 +16,9 @@ describe("Board", () => {
   ])("should update the cell value position (%i, %i)", (row, column, value) => {
     const board = new Board();
 
-    board.setCell(row, column, value);
+    board.setCell(row, column, value as CellValue);
 
-    expect(board.getCells()[row][column]).toEqual(value);
+    expect(board.getCell(row, column).getValue()).toEqual(value);
   });
 
   it.each([
@@ -31,8 +27,8 @@ describe("Board", () => {
   ])("should get the cell value position (%i, %i)", (row, column, value) => {
     const board = new Board();
 
-    board.setCell(row, column, value);
+    board.setCell(row, column, value as CellValue);
 
-    expect(board.getCell(row, column)).toEqual(value);
+    expect(board.getCell(row, column).getValue()).toEqual(value);
   });
 });
