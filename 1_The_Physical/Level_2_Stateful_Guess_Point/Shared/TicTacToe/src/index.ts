@@ -9,15 +9,15 @@ export class Board {
     ];
   }
 
-  getCells(): string[][] {
+  public getCells(): string[][] {
     return this.cells;
   }
 
-  setCell(row: number, column: number, value: string): void {
+  public setCell(row: number, column: number, value: string): void {
     this.cells[row][column] = value;
   }
 
-  getCell(row: number, column: number): string {
+  public getCell(row: number, column: number): string {
     return this.cells[row][column];
   }
 }
