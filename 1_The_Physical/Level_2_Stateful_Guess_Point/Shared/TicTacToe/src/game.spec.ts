@@ -14,4 +14,14 @@ describe("Game", () => {
       expect(game.getCurrentPlayer()).toEqual("X");
     });
   });
+
+  describe("when a player plays", () => {
+    it("should update the board with the player value", () => {
+      const game = new Game();
+
+      game.play(0, 0);
+
+      expect(game.getBoard().getCell(0, 0).getValue()).toEqual("X");
+    });
+  });
 });

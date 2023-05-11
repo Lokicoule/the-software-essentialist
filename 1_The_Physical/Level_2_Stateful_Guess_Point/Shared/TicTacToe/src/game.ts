@@ -10,6 +10,11 @@ export class Game {
     this.currentPlayer = "X";
   }
 
+  public play(row: number, column: number): void {
+    this.board.setCell(row, column, this.currentPlayer);
+    this.currentPlayer = this.currentPlayer === "X" ? "O" : "X";
+  }
+
   public getBoard(): Board {
     return this.board;
   }
