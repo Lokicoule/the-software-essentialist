@@ -23,5 +23,13 @@ describe("Game", () => {
 
       expect(game.getBoard().getCell(0, 0).getValue()).toEqual("X");
     });
+
+    it("should change the current player", () => {
+      const game = new Game();
+
+      game.play(0, 0);
+
+      expect(game.getCurrentPlayer()).toEqual("O");
+    });
   });
 });
