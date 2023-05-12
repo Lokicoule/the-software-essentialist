@@ -20,4 +20,20 @@ describe("Board", () => {
 
     expect(board.getCell(row, column).getValue()).toEqual(value);
   });
+
+  it("should be full when all cells are filled", () => {
+    const board = new Board();
+
+    board.setCell(0, 0, "X");
+    board.setCell(0, 1, "O");
+    board.setCell(0, 2, "X");
+    board.setCell(1, 0, "O");
+    board.setCell(1, 1, "X");
+    board.setCell(1, 2, "O");
+    board.setCell(2, 0, "X");
+    board.setCell(2, 1, "O");
+    board.setCell(2, 2, "X");
+
+    expect(board.isFull()).toBeTruthy();
+  });
 });

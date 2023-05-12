@@ -15,6 +15,10 @@ export class Board {
     return this.cells.every((row) => row.every((cell) => cell.isEmpty()));
   }
 
+  public isFull(): boolean {
+    return this.cells.every((row) => row.every((cell) => !cell.isEmpty()));
+  }
+
   public getCells(): Cell[][] {
     return this.cells;
   }
