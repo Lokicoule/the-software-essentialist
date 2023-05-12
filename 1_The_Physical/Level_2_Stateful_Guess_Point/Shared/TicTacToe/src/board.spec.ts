@@ -36,4 +36,13 @@ describe("Board", () => {
 
     expect(board.isFull()).toBeTruthy();
   });
+
+  it("should not update the cell value when the cell is not empty", () => {
+    const board = new Board();
+
+    board.setCell(0, 0, "X");
+    board.setCell(0, 0, "O");
+
+    expect(board.getCell(0, 0).getValue()).toEqual("X");
+  });
 });

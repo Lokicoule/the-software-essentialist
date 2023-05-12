@@ -24,7 +24,9 @@ export class Board {
   }
 
   public setCell(row: number, column: number, value: CellValue): void {
-    this.cells[row][column].setValue(value);
+    if (this.cells[row][column].isEmpty()) {
+      this.cells[row][column].setValue(value);
+    }
   }
 
   public getCell(row: number, column: number): Cell {

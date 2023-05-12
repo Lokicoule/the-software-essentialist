@@ -31,6 +31,15 @@ describe("Game", () => {
 
       expect(game.getCurrentPlayer().getMark()).toEqual("O");
     });
+
+    it("should not update the board when the cell is not empty", () => {
+      const game = new Game();
+
+      game.play(0, 0);
+      game.play(0, 0);
+
+      expect(game.getBoard().getCell(0, 0).getValue()).toEqual("X");
+    });
   });
 
   describe("when the game is over", () => {
