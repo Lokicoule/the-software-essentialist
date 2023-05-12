@@ -11,7 +11,7 @@ describe("Game", () => {
     it("should have the current player as X", () => {
       const game = new Game();
 
-      expect(game.getCurrentPlayer()).toEqual("X");
+      expect(game.getCurrentPlayer().getMark()).toEqual("X");
     });
   });
 
@@ -29,7 +29,7 @@ describe("Game", () => {
 
       game.play(0, 0);
 
-      expect(game.getCurrentPlayer()).toEqual("O");
+      expect(game.getCurrentPlayer().getMark()).toEqual("O");
     });
   });
 });
