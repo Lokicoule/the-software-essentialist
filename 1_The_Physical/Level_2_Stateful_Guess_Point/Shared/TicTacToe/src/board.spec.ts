@@ -1,5 +1,5 @@
-import { CellValue } from "./cell";
 import { Board } from "./board";
+import { CellValue } from "./cell";
 
 describe("Board", () => {
   describe("when a new board is created", () => {
@@ -10,15 +10,17 @@ describe("Board", () => {
     });
   });
 
-  it.each([
+  describe.each([
     [0, 0, "X"],
     [1, 2, "O"],
-  ])("should update the cell value position (%i, %i)", (row, column, value) => {
-    const board = new Board();
+  ])("when setting a cell", (row, column, value) => {
+    it(`should set the cell value to ${value}`, () => {
+      const board = new Board();
 
-    board.setCell(row, column, value as CellValue);
+      board.setCell(row, column, value as CellValue);
 
-    expect(board.getCell(row, column).getValue()).toEqual(value);
+      expect(board.getCell(row, column).getValue()).toEqual(value);
+    });
   });
 
   it("should be full when all cells are filled", () => {
