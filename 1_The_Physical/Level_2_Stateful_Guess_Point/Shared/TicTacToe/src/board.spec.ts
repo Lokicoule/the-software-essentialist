@@ -56,12 +56,23 @@ describe("Board", () => {
     });
   });
 
-  it("should not update the cell value when the cell is not empty", () => {
-    const board = new Board();
+  describe("when updating a cell value", () => {
+    it("should update the cell value when the cell is empty", () => {
+      const board = new Board();
 
-    board.setCell(0, 0, "X");
-    board.setCell(0, 0, "O");
+      board.setCell(0, 0, "X");
+      board.setCell(0, 1, "O");
 
-    expect(board.getCell(0, 0).getValue()).toEqual("X");
+      expect(board.getCell(0, 0).getValue()).toEqual("X");
+    });
+
+    it("should not update the cell value when the cell is not empty", () => {
+      const board = new Board();
+
+      board.setCell(0, 0, "X");
+      board.setCell(0, 0, "O");
+
+      expect(board.getCell(0, 0).getValue()).toEqual("X");
+    });
   });
 });
