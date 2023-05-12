@@ -32,4 +32,22 @@ describe("Game", () => {
       expect(game.getCurrentPlayer().getMark()).toEqual("O");
     });
   });
+
+  describe("when the game is over", () => {
+    it("should be over when the board is full", () => {
+      const game = new Game();
+
+      game.play(0, 0);
+      game.play(0, 1);
+      game.play(0, 2);
+      game.play(1, 0);
+      game.play(1, 1);
+      game.play(1, 2);
+      game.play(2, 0);
+      game.play(2, 1);
+      game.play(2, 2);
+
+      expect(game.isOver()).toBeTruthy();
+    });
+  });
 });

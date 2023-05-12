@@ -20,6 +20,10 @@ export class Game {
         : this.players[0];
   }
 
+  public isOver(): boolean {
+    return this.board.isFull();
+  }
+
   public getBoard(): Board {
     return this.board;
   }
