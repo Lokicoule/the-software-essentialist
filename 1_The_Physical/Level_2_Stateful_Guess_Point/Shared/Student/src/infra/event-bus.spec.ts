@@ -77,5 +77,17 @@ describe("EventBus", () => {
       eventBus.publish(new TestEvent("test"));
       expect(handler).toHaveBeenCalledTimes(2);
     });
+
+    it("should not subscribe to the same event more than once", () => {
+      const handler = jest.fn();
+      eventBus.subscribe("TestEvent", {
+        handle: handler,
+      });
+      eventBus.subscribe("TestEvent", {
+        handle: handler,
+      });
+      eventBus.publish(new TestEvent("test"));
+      expect(handler).toHaveBeenCalledTimes(1);
+    });
   });
 });

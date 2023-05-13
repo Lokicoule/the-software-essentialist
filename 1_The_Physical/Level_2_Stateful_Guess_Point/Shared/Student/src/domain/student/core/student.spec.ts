@@ -23,7 +23,9 @@ describe("Student", () => {
       const firstName = "Joe";
       const lastName = "Doe";
       const studentCreatedHandler = jest.fn();
-      EventBus.getInstance().subscribe("StudentCreated", studentCreatedHandler);
+      EventBus.getInstance().subscribe("StudentCreated", {
+        handle: studentCreatedHandler,
+      });
 
       // Act
       Student.create({ firstName, lastName }, EventBus.getInstance());
@@ -117,11 +119,12 @@ describe("Student", () => {
       const firstNameUpdatedHandler = jest.fn();
       const studentCreatedHandler = jest.fn();
 
-      EventBus.getInstance().subscribe(
-        "FirstNameUpdated",
-        firstNameUpdatedHandler
-      );
-      EventBus.getInstance().subscribe("StudentCreated", studentCreatedHandler);
+      EventBus.getInstance().subscribe("FirstNameUpdated", {
+        handle: firstNameUpdatedHandler,
+      });
+      EventBus.getInstance().subscribe("StudentCreated", {
+        handle: studentCreatedHandler,
+      });
 
       // Act
       const student = Student.create({ firstName, lastName });
@@ -183,11 +186,12 @@ describe("Student", () => {
       const lastNameUpdatedHandler = jest.fn();
       const studentCreatedHandler = jest.fn();
 
-      EventBus.getInstance().subscribe(
-        "LastNameUpdated",
-        lastNameUpdatedHandler
-      );
-      EventBus.getInstance().subscribe("StudentCreated", studentCreatedHandler);
+      EventBus.getInstance().subscribe("LastNameUpdated", {
+        handle: lastNameUpdatedHandler,
+      });
+      EventBus.getInstance().subscribe("StudentCreated", {
+        handle: studentCreatedHandler,
+      });
 
       // Act
       const student = Student.create({ firstName, lastName });
