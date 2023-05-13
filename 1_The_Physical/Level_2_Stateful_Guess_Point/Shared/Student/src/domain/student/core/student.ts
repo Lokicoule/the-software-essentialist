@@ -14,6 +14,7 @@ import { DomainEvent } from "../../core/domain-event";
 import { StudentCreated } from "../events/student-created";
 import { FirstNameUpdated } from "../events/first-name-updated";
 import { LastNameUpdated } from "../events/last-name-updated";
+import { EventBus } from "../../../infra/event-bus";
 
 interface StudentProps {
   firstName: string;
@@ -35,16 +36,16 @@ interface StudentValidationError {
 export class Student implements AggregateRoot<StudentState> {
   public readonly id: string;
   public readonly state: StudentState;
-  public readonly events: DomainEvent[] = [];
 
-  private constructor(props: StudentState) {
+  private constructor(props: StudentState, eventBus?: EventBus) {
     this.id = uuid();
     this.state = props;
-    this.events.push(new StudentCreated(this));
+    eventBus?.publish(new StudentCreated(this));
   }
 
   public static create(
-    props: StudentProps
+    props: StudentProps,
+    eventBus?: EventBus
   ): Result<Student, StudentValidationError> {
     const errors: StudentValidationError = {};
     const firstNameResult = FirstName.create(props.firstName);
@@ -68,16 +69,20 @@ export class Student implements AggregateRoot<StudentState> {
     }
 
     return Result.success(
-      new Student({
-        firstName: firstNameResult.getValue(),
-        lastName: lastNameResult.getValue(),
-        email: emailResult.getValue(),
-      })
+      new Student(
+        {
+          firstName: firstNameResult.getValue(),
+          lastName: lastNameResult.getValue(),
+          email: emailResult.getValue(),
+        },
+        eventBus
+      )
     );
   }
 
   public updateFirstName(
-    firstName: string
+    firstName: string,
+    eventBus: EventBus
   ): Result<Student, StudentValidationError> {
     const oldFirstName = this.state.firstName.value;
     const result = Student.create({
@@ -87,16 +92,15 @@ export class Student implements AggregateRoot<StudentState> {
 
     if (result.isSuccess()) {
       const student = result.getValue();
-      student.events.push(
-        new FirstNameUpdated(student, oldFirstName, firstName)
-      );
+      eventBus.publish(new FirstNameUpdated(student, oldFirstName, firstName));
     }
 
     return result;
   }
 
   public updateLastName(
-    lastName: string
+    lastName: string,
+    eventBus: EventBus
   ): Result<Student, StudentValidationError> {
     const oldLastName = this.state.lastName.value;
     const result = Student.create({
@@ -106,7 +110,7 @@ export class Student implements AggregateRoot<StudentState> {
 
     if (result.isSuccess()) {
       const student = result.getValue();
-      student.events.push(new LastNameUpdated(student, oldLastName, lastName));
+      eventBus.publish(new LastNameUpdated(student, oldLastName, lastName));
     }
 
     return result;

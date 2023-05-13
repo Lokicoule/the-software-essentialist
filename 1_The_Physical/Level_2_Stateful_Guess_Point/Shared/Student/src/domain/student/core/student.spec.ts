@@ -1,3 +1,4 @@
+import { EventBus } from "../../../infra/event-bus";
 import { Student } from "./student";
 
 describe("Student", () => {
@@ -21,15 +22,14 @@ describe("Student", () => {
       // Arrange
       const firstName = "Joe";
       const lastName = "Doe";
+      const studentCreatedHandler = jest.fn();
+      EventBus.getInstance().subscribe("StudentCreated", studentCreatedHandler);
 
       // Act
-      const student = Student.create({ firstName, lastName });
+      Student.create({ firstName, lastName }, EventBus.getInstance());
 
       // Assert
-      expect(student).toBeDefined();
-      expect(student?.getValue().events).toBeDefined();
-      expect(student?.getValue().events.length).toBe(1);
-      expect(student?.getValue().events[0].name).toEqual("StudentCreated");
+      expect(studentCreatedHandler).toHaveBeenCalledTimes(1);
     });
 
     it("should fail if first name is invalid", () => {
@@ -99,7 +99,9 @@ describe("Student", () => {
 
       // Act
       const student = Student.create({ firstName, lastName });
-      const updatedStudent = student.getValue().updateFirstName(newFirstName);
+      const updatedStudent = student
+        .getValue()
+        .updateFirstName(newFirstName, EventBus.getInstance());
 
       // Assert
       expect(updatedStudent.getValue().firstName).toBe(newFirstName);
@@ -112,17 +114,22 @@ describe("Student", () => {
       const firstName = "Joe";
       const lastName = "Doe";
       const newFirstName = "Asterix";
+      const firstNameUpdatedHandler = jest.fn();
+      const studentCreatedHandler = jest.fn();
+
+      EventBus.getInstance().subscribe(
+        "FirstNameUpdated",
+        firstNameUpdatedHandler
+      );
+      EventBus.getInstance().subscribe("StudentCreated", studentCreatedHandler);
 
       // Act
       const student = Student.create({ firstName, lastName });
-      const updatedStudent = student.getValue().updateFirstName(newFirstName);
+      student.getValue().updateFirstName(newFirstName, EventBus.getInstance());
 
       // Assert
-      expect(updatedStudent.getValue().events).toBeDefined();
-      expect(updatedStudent.getValue().events.length).toBe(2);
-      expect(updatedStudent.getValue().events[1].name).toEqual(
-        "FirstNameUpdated"
-      );
+      expect(firstNameUpdatedHandler).toHaveBeenCalledTimes(1);
+      expect(studentCreatedHandler).toHaveBeenCalledTimes(0);
     });
 
     it("should fail if first name is invalid", () => {
@@ -133,7 +140,9 @@ describe("Student", () => {
 
       // Act
       const student = Student.create({ firstName, lastName });
-      const updatedStudent = student.getValue().updateFirstName(newFirstName);
+      const updatedStudent = student
+        .getValue()
+        .updateFirstName(newFirstName, EventBus.getInstance());
 
       // Assert
       expect(updatedStudent.getError()).toEqual(
@@ -155,7 +164,9 @@ describe("Student", () => {
 
       // Act
       const student = Student.create({ firstName, lastName });
-      const updatedStudent = student.getValue().updateLastName(newLastName);
+      const updatedStudent = student
+        .getValue()
+        .updateLastName(newLastName, EventBus.getInstance());
 
       // Assert
       expect(updatedStudent).toBeDefined();
@@ -169,17 +180,22 @@ describe("Student", () => {
       const firstName = "Joe";
       const lastName = "Doe";
       const newLastName = "Dalton";
+      const lastNameUpdatedHandler = jest.fn();
+      const studentCreatedHandler = jest.fn();
+
+      EventBus.getInstance().subscribe(
+        "LastNameUpdated",
+        lastNameUpdatedHandler
+      );
+      EventBus.getInstance().subscribe("StudentCreated", studentCreatedHandler);
 
       // Act
       const student = Student.create({ firstName, lastName });
-      const updatedStudent = student.getValue().updateLastName(newLastName);
+      student.getValue().updateLastName(newLastName, EventBus.getInstance());
 
       // Assert
-      expect(updatedStudent.getValue().events).toBeDefined();
-      expect(updatedStudent.getValue().events.length).toBe(2);
-      expect(updatedStudent.getValue().events[1].name).toEqual(
-        "LastNameUpdated"
-      );
+      expect(lastNameUpdatedHandler).toHaveBeenCalledTimes(1);
+      expect(studentCreatedHandler).toHaveBeenCalledTimes(0);
     });
 
     it("should fail if last name is invalid", () => {
@@ -190,7 +206,9 @@ describe("Student", () => {
 
       // Act
       const student = Student.create({ firstName, lastName });
-      const updatedStudent = student.getValue().updateLastName(newLastName);
+      const updatedStudent = student
+        .getValue()
+        .updateLastName(newLastName, EventBus.getInstance());
 
       // Assert
       expect(updatedStudent.getError()).toEqual(
