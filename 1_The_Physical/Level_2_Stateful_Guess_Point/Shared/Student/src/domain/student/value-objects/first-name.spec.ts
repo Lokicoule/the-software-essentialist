@@ -1,84 +1,88 @@
 import { FirstName } from "./first-name";
 
 describe("FirstName", () => {
-  describe("when creating a first name", () => {
-    it("returns a first name instance with value 'John'", () => {
-      // Arrange
-      const firstName = "John";
+  describe("create", () => {
+    it("should fail if value is empty", () => {
+      const result = FirstName.create("");
 
-      // Act
-      const result = FirstName.create(firstName);
+      expect(result.isFailure).toBeTruthy();
+      expect(result.getError()).toEqual({
+        required: "Firstname is required",
+      });
+    });
 
-      // Assert
-      expect(result.getValue()?.value).toBe(firstName);
+    it("should fail if value is less than 2 characters long", () => {
+      const result = FirstName.create("a");
+
+      expect(result.isFailure).toBeTruthy();
+      expect(result.getError()).toEqual({
+        min: "Firstname must be at least 2 characters long",
+      });
+    });
+
+    it("should fail if value is more than 10 characters long", () => {
+      const result = FirstName.create("abcdefghijk");
+
+      expect(result.isFailure).toBeTruthy();
+      expect(result.getError()).toEqual({
+        max: "Firstname must be at most 10 characters long",
+      });
+    });
+
+    it("should fail if value contains non-letters", () => {
+      const result = FirstName.create("John123");
+
+      expect(result.isFailure).toBeTruthy();
+      expect(result.getError()).toEqual({
+        letters: "Firstname must contain only letters",
+      });
+    });
+
+    it("should succeed if value is valid", () => {
+      const result = FirstName.create("John");
+
+      expect(result.isSuccess).toBeTruthy();
+      expect(result.getValue().value).toBe("John");
     });
   });
 
-  describe("when student's first name is not provided", () => {
-    it("returns a FirstNameValidationError object with a 'required' message", () => {
-      // Arrange
-      const firstName = "";
+  describe("validate", () => {
+    it("should fail if value is empty", () => {
+      const result = FirstName.validate("");
 
-      // Act
-      const result = FirstName.create(firstName);
-
-      // Assert
-      expect(result.getError()).toEqual(
-        expect.objectContaining({
-          required: "Firstname is required",
-        })
-      );
+      expect(result).toEqual({
+        required: "Firstname is required",
+      });
     });
-  });
 
-  describe("when student's first name is less than 2 characters long", () => {
-    it("returns a FirstNameValidationError object with a 'min' message", () => {
-      // Arrange
-      const firstName = "J";
+    it("should fail if value is less than 2 characters long", () => {
+      const result = FirstName.validate("a");
 
-      // Act
-      const result = FirstName.create(firstName);
-
-      // Assert
-      expect(result.getError()).toEqual(
-        expect.objectContaining({
-          min: "Firstname must be at least 2 characters long",
-        })
-      );
+      expect(result).toEqual({
+        min: "Firstname must be at least 2 characters long",
+      });
     });
-  });
 
-  describe("when student's first name is more than 10 characters long", () => {
-    it("returns a FirstNameValidationError object with a 'max' message", () => {
-      // Arrange
-      const firstName = "JohnJohnJohn";
+    it("should fail if value is more than 10 characters long", () => {
+      const result = FirstName.validate("abcdefghijk");
 
-      // Act
-      const result = FirstName.create(firstName);
-
-      // Assert
-      expect(result.getError()).toEqual(
-        expect.objectContaining({
-          max: "Firstname must be at most 10 characters long",
-        })
-      );
+      expect(result).toEqual({
+        max: "Firstname must be at most 10 characters long",
+      });
     });
-  });
 
-  describe("when student's first name contains non-alphabetic characters", () => {
-    it("returns a FirstNameValidationError object with a 'letters' message", () => {
-      // Arrange
-      const firstName = "John1";
+    it("should fail if value contains non-letters", () => {
+      const result = FirstName.validate("John123");
 
-      // Act
-      const result = FirstName.create(firstName);
+      expect(result).toEqual({
+        letters: "Firstname must contain only letters",
+      });
+    });
 
-      // Assert
-      expect(result.getError()).toEqual(
-        expect.objectContaining({
-          letters: "Firstname must contain only letters",
-        })
-      );
+    it("should succeed if value is valid", () => {
+      const result = FirstName.validate("John");
+
+      expect(result).toEqual({});
     });
   });
 });
