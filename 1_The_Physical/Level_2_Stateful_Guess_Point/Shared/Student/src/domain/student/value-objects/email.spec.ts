@@ -5,7 +5,7 @@ describe("Email", () => {
     it("returns a new email instance with 'fekkalo@essentialist.dev' as value", () => {
       const email = Email.create("fekkalo@essentialist.dev");
 
-      expect(email.value?.value).toBe("fekkalo@essentialist.dev");
+      expect(email.getValue()?.value).toBe("fekkalo@essentialist.dev");
     });
 
     describe("when email is not provided", () => {
@@ -17,7 +17,7 @@ describe("Email", () => {
         const result = Email.create(email);
 
         // Assert
-        expect(result.error).toEqual(
+        expect(result.getError()).toEqual(
           expect.objectContaining({
             required: "Email is required",
           })
@@ -34,7 +34,7 @@ describe("Email", () => {
         const result = Email.create(email);
 
         // Assert
-        expect(result.error).toEqual(
+        expect(result.getError()).toEqual(
           expect.objectContaining({
             domain: "Email must be from 'essentialist.dev' domain",
           })
@@ -54,7 +54,7 @@ describe("Email", () => {
       });
 
       // Assert
-      expect(result.value?.value).toBe(`${local}@${Email.domain}`);
+      expect(result.getValue()?.value).toBe(`${local}@${Email.domain}`);
     });
   });
 });

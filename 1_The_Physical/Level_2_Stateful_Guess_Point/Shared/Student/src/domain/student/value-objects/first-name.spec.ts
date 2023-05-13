@@ -10,7 +10,7 @@ describe("FirstName", () => {
       const result = FirstName.create(firstName);
 
       // Assert
-      expect(result.value?.value).toBe(firstName);
+      expect(result.getValue()?.value).toBe(firstName);
     });
   });
 
@@ -23,7 +23,7 @@ describe("FirstName", () => {
       const result = FirstName.create(firstName);
 
       // Assert
-      expect(result.error).toEqual(
+      expect(result.getError()).toEqual(
         expect.objectContaining({
           required: "Firstname is required",
         })
@@ -40,7 +40,7 @@ describe("FirstName", () => {
       const result = FirstName.create(firstName);
 
       // Assert
-      expect(result.error).toEqual(
+      expect(result.getError()).toEqual(
         expect.objectContaining({
           min: "Firstname must be at least 2 characters long",
         })
@@ -57,7 +57,7 @@ describe("FirstName", () => {
       const result = FirstName.create(firstName);
 
       // Assert
-      expect(result.error).toEqual(
+      expect(result.getError()).toEqual(
         expect.objectContaining({
           max: "Firstname must be at most 10 characters long",
         })
@@ -74,7 +74,7 @@ describe("FirstName", () => {
       const result = FirstName.create(firstName);
 
       // Assert
-      expect(result.error).toEqual(
+      expect(result.getError()).toEqual(
         expect.objectContaining({
           letters: "Firstname must contain only letters",
         })

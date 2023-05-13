@@ -46,35 +46,36 @@ export class Student implements AggregateRoot<StudentState> {
   public static create(
     props: StudentInputProps
   ): Result<Student, StudentValidationError> {
+    const errors: StudentValidationError = {};
     const firstNameResult = FirstName.create(props.firstName);
     const lastNameResult = LastName.create(props.lastName);
-    const emailResult = Result.combine(firstNameResult, lastNameResult).flatMap(
-      ([FirstName, LastName]) =>
-        Student.generateEmail(FirstName.value, LastName.value)
-    );
+    const emailResult = Student.generateEmail(props.firstName, props.lastName);
 
-    const errors: StudentValidationError = {};
+    if (
+      firstNameResult.isSuccess() &&
+      lastNameResult.isSuccess() &&
+      emailResult.isSuccess()
+    ) {
+      return Result.success(
+        new Student({
+          firstName: firstNameResult.getValue(),
+          lastName: lastNameResult.getValue(),
+          email: emailResult.getValue(),
+        })
+      );
+    }
+
     if (firstNameResult.isFailure()) {
-      errors.firstName = firstNameResult.error;
+      errors.firstName = firstNameResult.getError();
     }
     if (lastNameResult.isFailure()) {
-      errors.lastName = lastNameResult.error;
+      errors.lastName = lastNameResult.getError();
     }
-    if (emailResult.isFailure() && !(emailResult.error instanceof Array)) {
-      errors.email = emailResult.error;
-    }
-
-    if (Object.keys(errors).length > 0) {
-      return Result.failure(errors);
+    if (emailResult.isFailure()) {
+      errors.email = emailResult.getError();
     }
 
-    return Result.success(
-      new Student({
-        firstName: firstNameResult.value!,
-        lastName: lastNameResult.value!,
-        email: emailResult.value!,
-      })
-    );
+    return Result.failure(errors);
   }
 
   public updateFirstName(
@@ -87,7 +88,7 @@ export class Student implements AggregateRoot<StudentState> {
     });
 
     if (result.isSuccess()) {
-      const student = result.value!;
+      const student = result.getValue();
       student.events.push(
         new FirstNameUpdated(student, oldFirstName, firstName)
       );
@@ -106,7 +107,7 @@ export class Student implements AggregateRoot<StudentState> {
     });
 
     if (result.isSuccess()) {
-      const student = result.value!;
+      const student = result.getValue();
       student.events.push(new LastNameUpdated(student, oldLastName, lastName));
     }
 

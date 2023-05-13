@@ -1,48 +1,61 @@
+class Success<T> {
+  public readonly isSuccess = true;
+  public readonly isFailure = false;
+
+  constructor(private readonly value: T) {}
+
+  public getValue(): T {
+    return this.value;
+  }
+}
+
+class Failure<E> {
+  public readonly isSuccess = false;
+  public readonly isFailure = true;
+
+  constructor(private readonly error: E) {}
+
+  public getError(): E {
+    return this.error;
+  }
+}
+
 export class Result<T, E> {
-  public readonly value?: T;
-  public readonly error?: E;
+  private constructor(private readonly result: Success<T> | Failure<E>) {}
 
-  private constructor(value?: T, error?: E) {
-    this.value = value;
-    this.error = error;
+  public static success<T>(value: T): Result<T, never> {
+    return new Result(new Success(value));
   }
 
-  public static success<T, E>(value: T): Result<T, E> {
-    return new Result(value);
-  }
-
-  public static failure<T, E>(error: E): Result<T, E> {
-    return new Result<T, E>(undefined, error);
-  }
-
-  public static combine<T1, E1, T2, E2>(
-    result1: Result<T1, E1>,
-    result2: Result<T2, E2>
-  ): Result<[T1, T2], [E1, E2]> {
-    if (result1.isSuccess() && result2.isSuccess()) {
-      return Result.success([result1.value!, result2.value!]);
-    } else {
-      const errors: [E1 | undefined, E2 | undefined] = [
-        result1.error,
-        result2.error,
-      ];
-      return Result.failure(errors.filter((e) => e !== undefined) as [E1, E2]);
-    }
-  }
-
-  public flatMap<RT, RE>(fn: (value: T) => Result<RT, RE>): Result<RT, RE | E> {
-    if (this.isSuccess()) {
-      return fn(this.value!);
-    }
-
-    return Result.failure(this.error!);
+  public static failure<E>(error: E): Result<never, E> {
+    return new Result(new Failure(error));
   }
 
   public isSuccess(): boolean {
-    return this.value !== undefined;
+    return this.result.isSuccess;
   }
 
   public isFailure(): boolean {
-    return this.error !== undefined;
+    return this.result.isFailure;
+  }
+
+  public getValue(): T {
+    if (this.result.isFailure) {
+      throw new Error(
+        "Can't get the value of an error result. Use 'getError' instead."
+      );
+    }
+
+    return this.result.getValue();
+  }
+
+  public getError(): E {
+    if (this.result.isSuccess) {
+      throw new Error(
+        "Can't get the error of a success result. Use 'getValue' instead."
+      );
+    }
+
+    return this.result.getError();
   }
 }
