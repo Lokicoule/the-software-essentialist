@@ -13,7 +13,9 @@ describe("EventBus", () => {
 
   it("should publish events to subscribers", () => {
     const handler = jest.fn();
-    EventBus.getInstance().subscribe("TestEvent", handler);
+    EventBus.getInstance().subscribe("TestEvent", {
+      handle: handler,
+    });
     EventBus.getInstance().publish(new TestEvent("test"));
     expect(handler).toHaveBeenCalledTimes(1);
   });
@@ -27,8 +29,12 @@ describe("EventBus", () => {
   it("should publish events to multiple subscribers", () => {
     const handler1 = jest.fn();
     const handler2 = jest.fn();
-    EventBus.getInstance().subscribe("TestEvent", handler1);
-    EventBus.getInstance().subscribe("TestEvent", handler2);
+    EventBus.getInstance().subscribe("TestEvent", {
+      handle: handler1,
+    });
+    EventBus.getInstance().subscribe("TestEvent", {
+      handle: handler2,
+    });
     EventBus.getInstance().publish(new TestEvent("test"));
     expect(handler1).toHaveBeenCalledTimes(1);
     expect(handler2).toHaveBeenCalledTimes(1);
