@@ -1,84 +1,92 @@
 import { LastName } from "./last-name";
 
 describe("LastName", () => {
-  describe("when creating a last name", () => {
-    it("returns a last name instance with value 'Doe'", () => {
-      // Arrange
-      const firstName = "Doe";
+  describe("create", () => {
+    it("should fail if value is empty", () => {
+      const result = LastName.create("");
 
-      // Act
-      const result = LastName.create(firstName);
-
-      // Assert
-      expect(result.getValue()?.value).toBe(firstName);
+      expect(result.isFailure).toBeTruthy();
+      expect(result.getError()).toEqual({
+        required: "Lastname is required",
+      });
     });
-  });
 
-  describe("when student's last name is not provided", () => {
-    it("returns a LastNameValidationError object with a 'required' message", () => {
-      // Arrange
-      const firstName = "";
+    it("should fail if value is less than 2 characters long", () => {
+      const result = LastName.create("a");
 
-      // Act
-      const result = LastName.create(firstName);
+      expect(result.isFailure).toBeTruthy();
+      expect(result.getError()).toEqual({
+        min: "Lastname must be at least 2 characters long",
+      });
+    });
 
-      // Assert
-      expect(result.getError()).toEqual(
+    it("should fail if value is more than 15 characters long", () => {
+      const result = LastName.create("a".repeat(16));
+
+      expect(result.isFailure).toBeTruthy();
+      expect(result.getError()).toEqual({
+        max: "Lastname must be at most 15 characters long",
+      });
+    });
+
+    it("should fail if value contains non-letter characters", () => {
+      const result = LastName.create("a1");
+
+      expect(result.isFailure).toBeTruthy();
+      expect(result.getError()).toEqual({
+        letters: "Lastname must contain only letters",
+      });
+    });
+
+    it("should succeed if value is valid", () => {
+      const result = LastName.create("iamvalid");
+
+      expect(result.isSuccess).toBeTruthy();
+      expect(result.getValue()).toEqual(
         expect.objectContaining({
-          required: "Lastname is required",
+          value: "iamvalid",
         })
       );
     });
   });
 
-  describe("when student's last name is less than 2 characters long", () => {
-    it("returns a LastNameValidationError object with a 'min' message", () => {
-      // Arrange
-      const firstName = "D";
+  describe("validate", () => {
+    it("should return error if value is empty", () => {
+      const result = LastName.validate("");
 
-      // Act
-      const result = LastName.create(firstName);
-
-      // Assert
-      expect(result.getError()).toEqual(
-        expect.objectContaining({
-          min: "Lastname must be at least 2 characters long",
-        })
-      );
+      expect(result).toEqual({
+        required: "Lastname is required",
+      });
     });
-  });
 
-  describe("when student's last name is more than 15 characters long", () => {
-    it("returns a LastNameValidationError object with a 'max' message", () => {
-      // Arrange
-      const firstName = "DoeDoeDoeDoeDoeDoe";
+    it("should return error if value is less than 2 characters long", () => {
+      const result = LastName.validate("a");
 
-      // Act
-      const result = LastName.create(firstName);
-
-      // Assert
-      expect(result.getError()).toEqual(
-        expect.objectContaining({
-          max: "Lastname must be at most 15 characters long",
-        })
-      );
+      expect(result).toEqual({
+        min: "Lastname must be at least 2 characters long",
+      });
     });
-  });
 
-  describe("when student's last name contains non-alphabetic characters", () => {
-    it("returns a LastNameValidationError object with a 'letters' message", () => {
-      // Arrange
-      const firstName = "Doe1";
+    it("should return error if value is more than 15 characters long", () => {
+      const result = LastName.validate("a".repeat(16));
 
-      // Act
-      const result = LastName.create(firstName);
+      expect(result).toEqual({
+        max: "Lastname must be at most 15 characters long",
+      });
+    });
 
-      // Assert
-      expect(result.getError()).toEqual(
-        expect.objectContaining({
-          letters: "Lastname must contain only letters",
-        })
-      );
+    it("should return error if value contains non-letter characters", () => {
+      const result = LastName.validate("a1");
+
+      expect(result).toEqual({
+        letters: "Lastname must contain only letters",
+      });
+    });
+
+    it("should return empty object if value is valid", () => {
+      const result = LastName.validate("abcddef");
+
+      expect(result).toEqual({});
     });
   });
 });
