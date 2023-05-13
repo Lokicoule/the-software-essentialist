@@ -1,60 +1,41 @@
 import { Email } from "./email";
 
 describe("Email", () => {
-  describe("when creating a new email", () => {
-    it("returns a new email instance with 'fekkalo@essentialist.dev' as value", () => {
-      const email = Email.create("fekkalo@essentialist.dev");
+  describe("create", () => {
+    it("should fail if value is empty", () => {
+      const result = Email.create("");
 
-      expect(email.getValue()?.value).toBe("fekkalo@essentialist.dev");
-    });
-
-    describe("when email is not provided", () => {
-      it("returns an EmailValidationError object with a 'required' message", () => {
-        // Arrange
-        const email = "";
-
-        // Act
-        const result = Email.create(email);
-
-        // Assert
-        expect(result.getError()).toEqual(
-          expect.objectContaining({
-            required: "Email is required",
-          })
-        );
+      expect(result.isFailure).toBeTruthy();
+      expect(result.getError()).toEqual({
+        required: "Email is required",
       });
     });
 
-    describe("when domain email is not 'essentialist.dev'", () => {
-      it("returns an EmailValidationError object with a 'domain' message", () => {
-        // Arrange
-        const email = "toto@gmail.com";
+    it("should fail if value is not from the domain", () => {
+      const result = Email.create("toto@gmail.com");
 
-        // Act
-        const result = Email.create(email);
-
-        // Assert
-        expect(result.getError()).toEqual(
-          expect.objectContaining({
-            domain: "Email must be from 'essentialist.dev' domain",
-          })
-        );
+      expect(result.isFailure).toBeTruthy();
+      expect(result.getError()).toEqual({
+        domain: "Email must be from 'essentialist.dev' domain",
       });
+    });
+
+    it("should succeed if value is valid", () => {
+      const result = Email.create("toto@essentialist.dev");
+
+      expect(result.isSuccess).toBeTruthy();
+      expect(result.getValue()).toBeInstanceOf(Email);
+      expect(result.getValue().value).toBe("toto@essentialist.dev");
     });
   });
 
-  describe("when generating a new email", () => {
-    it("returns a new email instance with 'essentialist.dev' as domain", () => {
-      // Arrange
-      const local = "fekkailoik";
+  describe("generate", () => {
+    it("should succeed if local is valid", () => {
+      const result = Email.generate({ local: "toto" });
 
-      // Act
-      const result = Email.generate({
-        local,
-      });
-
-      // Assert
-      expect(result.getValue()?.value).toBe(`${local}@${Email.domain}`);
+      expect(result.isSuccess).toBeTruthy();
+      expect(result.getValue()).toBeInstanceOf(Email);
+      expect(result.getValue().value).toBe("toto@essentialist.dev");
     });
   });
 });
