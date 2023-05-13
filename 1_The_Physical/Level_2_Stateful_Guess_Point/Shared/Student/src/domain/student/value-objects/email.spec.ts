@@ -30,6 +30,15 @@ describe("Email", () => {
   });
 
   describe("generate", () => {
+    it("should fail if local is empty", () => {
+      const result = Email.generate({ local: "" });
+
+      expect(result.isFailure).toBeTruthy();
+      expect(result.getError()).toEqual({
+        required: "Local part of the email is required",
+      });
+    });
+
     it("should succeed if local is valid", () => {
       const result = Email.generate({ local: "toto" });
 

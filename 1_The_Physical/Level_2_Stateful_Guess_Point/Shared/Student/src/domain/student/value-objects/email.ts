@@ -36,10 +36,16 @@ export class Email extends ValueObject<EmailProps> {
   public static generate({
     local,
   }: EmailGeneratorProps): Result<Email, EmailValidationError> {
+    if (!local) {
+      return Result.failure({
+        required: "Local part of the email is required",
+      });
+    }
+
     return Email.create(`${local}@${Email.domain}`);
   }
 
-  public static validate(value: string): EmailValidationError {
+  private static validate(value: string): EmailValidationError {
     const error: EmailValidationError = {};
 
     if (!value) {
