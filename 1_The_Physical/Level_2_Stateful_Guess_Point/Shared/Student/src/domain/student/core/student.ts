@@ -15,7 +15,7 @@ import { StudentCreated } from "../events/student-created";
 import { FirstNameUpdated } from "../events/first-name-updated";
 import { LastNameUpdated } from "../events/last-name-updated";
 
-interface StudentInputProps {
+interface StudentProps {
   firstName: string;
   lastName: string;
 }
@@ -44,38 +44,36 @@ export class Student implements AggregateRoot<StudentState> {
   }
 
   public static create(
-    props: StudentInputProps
+    props: StudentProps
   ): Result<Student, StudentValidationError> {
     const errors: StudentValidationError = {};
     const firstNameResult = FirstName.create(props.firstName);
     const lastNameResult = LastName.create(props.lastName);
     const emailResult = Student.generateEmail(props.firstName, props.lastName);
 
-    if (
-      firstNameResult.isSuccess() &&
-      lastNameResult.isSuccess() &&
-      emailResult.isSuccess()
-    ) {
-      return Result.success(
-        new Student({
-          firstName: firstNameResult.getValue(),
-          lastName: lastNameResult.getValue(),
-          email: emailResult.getValue(),
-        })
-      );
-    }
-
     if (firstNameResult.isFailure()) {
       errors.firstName = firstNameResult.getError();
     }
+
     if (lastNameResult.isFailure()) {
       errors.lastName = lastNameResult.getError();
     }
+
     if (emailResult.isFailure()) {
       errors.email = emailResult.getError();
     }
 
-    return Result.failure(errors);
+    if (Object.values(errors).length) {
+      return Result.failure(errors);
+    }
+
+    return Result.success(
+      new Student({
+        firstName: firstNameResult.getValue(),
+        lastName: lastNameResult.getValue(),
+        email: emailResult.getValue(),
+      })
+    );
   }
 
   public updateFirstName(
