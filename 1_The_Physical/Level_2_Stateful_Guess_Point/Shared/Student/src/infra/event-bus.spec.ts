@@ -64,5 +64,18 @@ describe("EventBus", () => {
       eventBus.publish(new TestEvent("test"));
       expect(handler).toHaveBeenCalledTimes(1);
     });
+
+    it("should subscribe to multiple events", () => {
+      const handler = jest.fn();
+      eventBus.subscribe("TestEvent", {
+        handle: handler,
+      });
+      eventBus.subscribe("TestEvent2", {
+        handle: handler,
+      });
+      eventBus.publish(new TestEvent("test"));
+      eventBus.publish(new TestEvent("test"));
+      expect(handler).toHaveBeenCalledTimes(2);
+    });
   });
 });
