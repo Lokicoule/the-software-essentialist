@@ -2,6 +2,8 @@ import { DomainEvent } from "../domain/core/domain-event";
 import { EventBus } from "./event-bus";
 
 describe("EventBus", () => {
+  let eventBus: EventBus;
+
   class TestEvent implements DomainEvent {
     public readonly name = "TestEvent";
     public readonly timestamp: Date;
@@ -11,32 +13,56 @@ describe("EventBus", () => {
     }
   }
 
-  it("should publish events to subscribers", () => {
-    const handler = jest.fn();
-    EventBus.getInstance().subscribe("TestEvent", {
-      handle: handler,
-    });
-    EventBus.getInstance().publish(new TestEvent("test"));
-    expect(handler).toHaveBeenCalledTimes(1);
+  beforeEach(() => {
+    eventBus = EventBus.getInstance();
   });
 
-  it("should not publish events to unsubscribed handlers", () => {
-    const handler = jest.fn();
-    EventBus.getInstance().publish(new TestEvent("test"));
-    expect(handler).toHaveBeenCalledTimes(0);
+  afterEach(() => {
+    eventBus.clear();
   });
 
-  it("should publish events to multiple subscribers", () => {
-    const handler1 = jest.fn();
-    const handler2 = jest.fn();
-    EventBus.getInstance().subscribe("TestEvent", {
-      handle: handler1,
+  describe("publish", () => {
+    it("should publish events to subscribers", () => {
+      const handler = jest.fn();
+      eventBus.subscribe("TestEvent", {
+        handle: handler,
+      });
+      eventBus.publish(new TestEvent("test"));
+      expect(handler).toHaveBeenCalledTimes(1);
     });
-    EventBus.getInstance().subscribe("TestEvent", {
-      handle: handler2,
+
+    it("should not publish events to unsubscribed handlers", () => {
+      const handler = jest.fn();
+      eventBus.publish(new TestEvent("test"));
+      expect(handler).toHaveBeenCalledTimes(0);
     });
-    EventBus.getInstance().publish(new TestEvent("test"));
-    expect(handler1).toHaveBeenCalledTimes(1);
-    expect(handler2).toHaveBeenCalledTimes(1);
+
+    it("should publish events to multiple subscribers", () => {
+      const handler1 = jest.fn();
+      const handler2 = jest.fn();
+
+      eventBus.subscribe("TestEvent", {
+        handle: handler1,
+      });
+      eventBus.subscribe("TestEvent", {
+        handle: handler2,
+      });
+
+      eventBus.publish(new TestEvent("test"));
+
+      expect(handler1).toHaveBeenCalledTimes(1);
+      expect(handler2).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe("subscribe", () => {
+    it("should subscribe to events", () => {
+      const handler = jest.fn();
+      eventBus.subscribe("TestEvent", {
+        handle: handler,
+      });
+      eventBus.publish(new TestEvent("test"));
+      expect(handler).toHaveBeenCalledTimes(1);
+    });
   });
 });

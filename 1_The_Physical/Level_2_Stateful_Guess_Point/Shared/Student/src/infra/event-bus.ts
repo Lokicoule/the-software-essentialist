@@ -31,4 +31,8 @@ export class EventBus {
 
     this.subscribers.get(eventName)?.push(handler);
   }
+
+  public clear(): void {
+    this.subscribers.clear();
+  }
 }
