@@ -15,6 +15,18 @@ describe("Student", () => {
       expect(student?.getValue().firstName).toBe(firstName);
       expect(student?.getValue().lastName).toBe(lastName);
       expect(student?.getValue().email).toBe("doejo@essentialist.dev");
+    });
+
+    it("should emit StudentCreated event", () => {
+      // Arrange
+      const firstName = "Joe";
+      const lastName = "Doe";
+
+      // Act
+      const student = Student.create({ firstName, lastName });
+
+      // Assert
+      expect(student).toBeDefined();
       expect(student?.getValue().events).toBeDefined();
       expect(student?.getValue().events.length).toBe(1);
       expect(student?.getValue().events[0].name).toEqual("StudentCreated");
@@ -93,6 +105,19 @@ describe("Student", () => {
       expect(updatedStudent.getValue().firstName).toBe(newFirstName);
       expect(updatedStudent.getValue().lastName).toBe(lastName);
       expect(updatedStudent.getValue().email).toBe("doeas@essentialist.dev");
+    });
+
+    it("should emit FirstNameUpdated event", () => {
+      // Arrange
+      const firstName = "Joe";
+      const lastName = "Doe";
+      const newFirstName = "Asterix";
+
+      // Act
+      const student = Student.create({ firstName, lastName });
+      const updatedStudent = student.getValue().updateFirstName(newFirstName);
+
+      // Assert
       expect(updatedStudent.getValue().events).toBeDefined();
       expect(updatedStudent.getValue().events.length).toBe(2);
       expect(updatedStudent.getValue().events[1].name).toEqual(
@@ -137,9 +162,22 @@ describe("Student", () => {
       expect(updatedStudent?.getValue().firstName).toBe(firstName);
       expect(updatedStudent?.getValue().lastName).toBe(newLastName);
       expect(updatedStudent?.getValue().email).toBe("daltojo@essentialist.dev");
-      expect(updatedStudent?.getValue().events).toBeDefined();
-      expect(updatedStudent?.getValue().events.length).toBe(2);
-      expect(updatedStudent?.getValue().events[1].name).toEqual(
+    });
+
+    it("should emit LastNameUpdated event", () => {
+      // Arrange
+      const firstName = "Joe";
+      const lastName = "Doe";
+      const newLastName = "Dalton";
+
+      // Act
+      const student = Student.create({ firstName, lastName });
+      const updatedStudent = student.getValue().updateLastName(newLastName);
+
+      // Assert
+      expect(updatedStudent.getValue().events).toBeDefined();
+      expect(updatedStudent.getValue().events.length).toBe(2);
+      expect(updatedStudent.getValue().events[1].name).toEqual(
         "LastNameUpdated"
       );
     });
