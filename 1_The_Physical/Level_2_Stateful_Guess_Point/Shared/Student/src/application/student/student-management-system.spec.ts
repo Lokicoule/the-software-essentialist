@@ -15,20 +15,38 @@ describe("StudentManagementSystem", () => {
     handler.mockClear();
   });
 
-  it("should create a student", () => {
-    eventBus.subscribe("StudentCreated", {
-      handle: handler,
+  describe("createStudent", () => {
+    it("should create a student", () => {
+      eventBus.subscribe("StudentCreated", {
+        handle: handler,
+      });
+
+      const studentStudentManagementSystem: StudentManagementSystem =
+        new StudentManagementSystem(eventBus);
+      const student = studentStudentManagementSystem.createStudent(
+        "John",
+        "Doe"
+      );
+
+      expect(student).not.toBeNull();
+      expect(student?.firstName).toBe("John");
+      expect(student?.lastName).toBe("Doe");
+      expect(student?.email).toBe("doejo@essentialist.dev");
+      expect(handler).toHaveBeenCalledTimes(1);
     });
 
-    const studentStudentManagementSystem: StudentManagementSystem =
-      new StudentManagementSystem(eventBus);
-    const student = studentStudentManagementSystem.createStudent("John", "Doe");
+    it("should not create a student with invalid first name", () => {
+      eventBus.subscribe("StudentCreated", {
+        handle: handler,
+      });
 
-    expect(student).not.toBeNull();
-    expect(student?.firstName).toBe("John");
-    expect(student?.lastName).toBe("Doe");
-    expect(student?.email).toBe("doejo@essentialist.dev");
-    expect(handler).toHaveBeenCalledTimes(1);
+      const studentStudentManagementSystem: StudentManagementSystem =
+        new StudentManagementSystem(eventBus);
+      const student = studentStudentManagementSystem.createStudent("J", "Doe");
+
+      expect(student).toBeNull();
+      expect(handler).not.toHaveBeenCalled();
+    });
   });
 
   it("should update a student's first name", () => {
