@@ -25,6 +25,15 @@ describe("EmailValidator", () => {
       );
     });
 
+    it("should return error if email is not from the domain", () => {
+      const email = "test@gmail.com";
+      const result = validator.validate(email);
+
+      expect(result).toEqual({
+        domain: `Email must be from '${Email.domain}' domain`,
+      });
+    });
+
     it("should return empty object if email is valid", () => {
       const email = `test@${Email.domain}`;
       const result = validator.validate(email);
