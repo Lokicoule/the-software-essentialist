@@ -2,6 +2,7 @@ interface BaseValidationError {
   required?: string;
   pattern?: string;
   min?: string;
+  max?: string;
 }
 
 interface BaseProps {
@@ -17,6 +18,8 @@ export abstract class Validator<
   protected abstract patternMessage: string;
   protected abstract minLength: number;
   protected abstract minLengthMessage: string;
+  protected abstract maxLength: number;
+  protected abstract maxLengthMessage: string;
 
   public validate(props: Props): ValidationError {
     const errors: ValidationError[] = [];
@@ -24,8 +27,7 @@ export abstract class Validator<
     errors.push(this.validateRequired(props));
     errors.push(this.validatePattern(props));
     errors.push(this.validateMinLength(props));
-
-    console.log(errors);
+    errors.push(this.validateMaxLength(props));
 
     return this.mergeErrors(errors);
   }
@@ -58,6 +60,16 @@ export abstract class Validator<
 
     if (props?.value && props.value.length < this.minLength) {
       error.min = this.minLengthMessage;
+    }
+
+    return error;
+  }
+
+  private validateMaxLength(props: Props): ValidationError {
+    const error: ValidationError = {} as ValidationError;
+
+    if (props?.value && props.value.length > this.maxLength) {
+      error.max = this.maxLengthMessage;
     }
 
     return error;

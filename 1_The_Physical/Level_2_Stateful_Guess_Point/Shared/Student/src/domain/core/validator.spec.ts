@@ -10,6 +10,8 @@ describe("Validator", () => {
     protected patternMessage = "Test must contain only letters";
     protected minLength = 4;
     protected minLengthMessage = "Test must be at least 4 characters long";
+    protected maxLength = 10;
+    protected maxLengthMessage = "Test must be at most 10 characters long";
   }
 
   describe("validateRequired", () => {
@@ -56,10 +58,30 @@ describe("Validator", () => {
     it("should return an error if props is not valid", () => {
       const validator = new TestValidator();
 
-      const result = validator.validate({ value: "tes" });
+      const result = validator.validate({ value: "a".repeat(3) });
 
       expect(result).toEqual({
         min: "Test must be at least 4 characters long",
+      });
+    });
+
+    it("should return an empty object if props is valid", () => {
+      const validator = new TestValidator();
+
+      const result = validator.validate({ value: "test" });
+
+      expect(result).toEqual({});
+    });
+  });
+
+  describe("validateMaxLength", () => {
+    it("should return an error if props is not valid", () => {
+      const validator = new TestValidator();
+
+      const result = validator.validate({ value: "a".repeat(11) });
+
+      expect(result).toEqual({
+        max: "Test must be at most 10 characters long",
       });
     });
 
