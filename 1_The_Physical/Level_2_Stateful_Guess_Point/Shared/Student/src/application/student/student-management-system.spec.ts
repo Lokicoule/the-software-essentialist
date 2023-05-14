@@ -26,6 +26,7 @@ describe("StudentManagementSystem", () => {
     it("should create a student", () => {
       const studentStudentManagementSystem: StudentManagementSystem =
         new StudentManagementSystem(eventBus);
+
       const student = studentStudentManagementSystem.createStudent(
         "John",
         "Doe"
@@ -46,6 +47,7 @@ describe("StudentManagementSystem", () => {
       (_name: string, firstName: string, lastName: string) => {
         const studentStudentManagementSystem: StudentManagementSystem =
           new StudentManagementSystem(eventBus);
+
         const student = studentStudentManagementSystem.createStudent(
           firstName,
           lastName
@@ -71,6 +73,7 @@ describe("StudentManagementSystem", () => {
         "John",
         "Doe"
       );
+
       const updatedStudent =
         studentStudentManagementSystem.updateStudentFirstName(student!, "Jane");
 
@@ -85,6 +88,7 @@ describe("StudentManagementSystem", () => {
         "John",
         "Doe"
       );
+
       const updatedStudent =
         studentStudentManagementSystem.updateStudentFirstName(student!, "J");
 
@@ -111,10 +115,10 @@ describe("StudentManagementSystem", () => {
     eventBus.subscribe("LastNameUpdated", {
       handle: handler,
     });
-
     const studentStudentManagementSystem: StudentManagementSystem =
       new StudentManagementSystem(eventBus);
     const student = studentStudentManagementSystem.createStudent("John", "Doe");
+
     const updatedStudent = studentStudentManagementSystem.updateStudentLastName(
       student!,
       "Doe"
@@ -122,6 +126,20 @@ describe("StudentManagementSystem", () => {
 
     expect(updatedStudent?.lastName).toBe("Doe");
     expect(handler).toHaveBeenCalledTimes(1);
+  });
+
+  it("should fail if last name is invalid", () => {
+    const studentStudentManagementSystem: StudentManagementSystem =
+      new StudentManagementSystem(eventBus);
+    const student = studentStudentManagementSystem.createStudent("John", "Doe");
+
+    const updatedStudent = studentStudentManagementSystem.updateStudentLastName(
+      student!,
+      "D"
+    );
+
+    expect(updatedStudent).toBeNull();
+    expect(handler).not.toHaveBeenCalled();
   });
 
   it("should throw an Error if student does not exist", () => {
