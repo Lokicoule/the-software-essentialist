@@ -7,7 +7,7 @@ describe("LastName", () => {
 
       expect(result.isFailure).toBeTruthy();
       expect(result.getError()).toEqual({
-        required: "Lastname is required",
+        required: "Last name is required",
       });
     });
 
@@ -16,7 +16,7 @@ describe("LastName", () => {
 
       expect(result.isFailure).toBeTruthy();
       expect(result.getError()).toEqual({
-        min: "Lastname must be at least 2 characters long",
+        min: "Last name must be at least 2 characters long",
       });
     });
 
@@ -25,7 +25,7 @@ describe("LastName", () => {
 
       expect(result.isFailure).toBeTruthy();
       expect(result.getError()).toEqual({
-        max: "Lastname must be at most 15 characters long",
+        max: "Last name must be at most 15 characters long",
       });
     });
 
@@ -34,7 +34,7 @@ describe("LastName", () => {
 
       expect(result.isFailure).toBeTruthy();
       expect(result.getError()).toEqual({
-        letters: "Lastname must contain only letters",
+        pattern: "Last name must contain only letters",
       });
     });
 

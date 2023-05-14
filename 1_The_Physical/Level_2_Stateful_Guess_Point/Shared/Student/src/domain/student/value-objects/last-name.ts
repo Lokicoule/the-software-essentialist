@@ -17,7 +17,7 @@ export class LastName extends ValueObject<LastNameProps> {
   public static create(
     value: string
   ): Result<LastName, LastNameValidationError> {
-    const errors = LastNameValidator.validate(value);
+    const errors = new LastNameValidator().validate(value);
 
     if (
       Object.values(errors).some((props) => Object.values(props).some(Boolean))
