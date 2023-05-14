@@ -1,4 +1,4 @@
-interface BaseValidationError {
+interface ValidationError {
   required?: string;
   pattern?: string;
   min?: string;
@@ -9,17 +9,14 @@ interface BaseProps {
   value: string;
 }
 
-export abstract class Validator<
-  Props extends BaseProps,
-  ValidationError extends BaseValidationError
-> {
-  protected abstract requiredMessage: string;
-  protected abstract pattern: RegExp;
-  protected abstract patternMessage: string;
-  protected abstract minLength: number;
-  protected abstract minLengthMessage: string;
-  protected abstract maxLength: number;
-  protected abstract maxLengthMessage: string;
+export abstract class Validator<Props extends BaseProps> {
+  protected abstract requiredMessage?: string;
+  protected abstract pattern?: RegExp;
+  protected abstract patternMessage?: string;
+  protected abstract minLength?: number;
+  protected abstract minLengthMessage?: string;
+  protected abstract maxLength?: number;
+  protected abstract maxLengthMessage?: string;
 
   public validate(props: Props): ValidationError {
     const errors: ValidationError[] = [];
@@ -45,12 +42,13 @@ export abstract class Validator<
   private validatePattern(props: Props): ValidationError {
     const error: ValidationError = {} as ValidationError;
 
-    if (props?.value && !this.pattern.test(props.value.trim())) {
-      console.log(this.pattern);
+    if (
+      props?.value &&
+      this.pattern &&
+      !this.pattern.test(props.value.trim())
+    ) {
       error.pattern = this.patternMessage;
     }
-
-    console.log(error);
 
     return error;
   }
@@ -58,7 +56,11 @@ export abstract class Validator<
   private validateMinLength(props: Props): ValidationError {
     const error: ValidationError = {} as ValidationError;
 
-    if (props?.value && props.value.trim().length < this.minLength) {
+    if (
+      props?.value &&
+      this.minLength &&
+      props.value.trim().length < this.minLength
+    ) {
       error.min = this.minLengthMessage;
     }
 
@@ -68,7 +70,11 @@ export abstract class Validator<
   private validateMaxLength(props: Props): ValidationError {
     const error: ValidationError = {} as ValidationError;
 
-    if (props?.value && props.value.trim().length > this.maxLength) {
+    if (
+      props?.value &&
+      this.maxLength &&
+      props.value.trim().length > this.maxLength
+    ) {
       error.max = this.maxLengthMessage;
     }
 

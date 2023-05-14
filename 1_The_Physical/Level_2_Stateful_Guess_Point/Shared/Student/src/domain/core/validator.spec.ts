@@ -1,10 +1,7 @@
 import { Validator } from "./validator";
 
 describe("Validator", () => {
-  class TestValidator extends Validator<
-    { value: string },
-    { required: string }
-  > {
+  class TestValidator extends Validator<{ value: string }> {
     protected requiredMessage = "Test is required";
     protected pattern = /^[a-zA-Z]+$/;
     protected patternMessage = "Test must contain only letters";
@@ -115,6 +112,36 @@ describe("Validator", () => {
       const validator = new TestValidator();
 
       const result = validator.validate({ value: "      " + "a".repeat(10) });
+
+      expect(result).toEqual({});
+    });
+  });
+
+  describe("optional validation", () => {
+    class OptionalTestValidator extends Validator<{ value: string }> {
+      protected requiredMessage = "Test is required";
+      protected pattern?: RegExp;
+      protected patternMessage?: string;
+      protected minLength?: number;
+      protected minLengthMessage?: string;
+      protected maxLength?: number;
+      protected maxLengthMessage?: string;
+    }
+
+    it("should return an error if props is empty", () => {
+      const validator = new OptionalTestValidator();
+
+      const result = validator.validate({ value: "" });
+
+      expect(result).toEqual({
+        required: "Test is required",
+      });
+    });
+
+    it("should return an empty object if props is valid", () => {
+      const validator = new OptionalTestValidator();
+
+      const result = validator.validate({ value: "test" });
 
       expect(result).toEqual({});
     });
