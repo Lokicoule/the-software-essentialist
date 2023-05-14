@@ -1,35 +1,13 @@
-export interface FirstNameValidationError {
-  min?: string;
-  max?: string;
-  letters?: string;
-  required?: string;
-}
+import { ValidationError, Validator } from "../../core/validator";
 
-export class FirstNameValidator {
-  static readonly minLength = 2;
-  static readonly maxLength = 10;
+export interface FirstNameValidationError extends ValidationError {}
 
-  public static validate(value: string): FirstNameValidationError {
-    const errors: FirstNameValidationError = {};
-
-    if (!value) {
-      errors.required = "Firstname is required";
-    } else {
-      value = value.trim();
-
-      if (value.length < FirstNameValidator.minLength) {
-        errors.min = `Firstname must be at least ${FirstNameValidator.minLength} characters long`;
-      }
-
-      if (value.length > FirstNameValidator.maxLength) {
-        errors.max = `Firstname must be at most ${FirstNameValidator.maxLength} characters long`;
-      }
-
-      if (!/^[a-zA-Z]+$/.test(value)) {
-        errors.letters = `Firstname must contain only letters`;
-      }
-    }
-
-    return errors;
-  }
+export class FirstNameValidator extends Validator {
+  protected requiredMessage = "First name is required";
+  protected pattern = /^[a-zA-Z]+$/;
+  protected patternMessage = "First name must contain only letters";
+  protected minLength = 2;
+  protected minLengthMessage = "First name must be at least 2 characters long";
+  protected maxLength = 10;
+  protected maxLengthMessage = "First name must be at most 10 characters long";
 }
