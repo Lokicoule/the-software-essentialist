@@ -1,7 +1,7 @@
 import { Validator } from "./validator";
 
 describe("Validator", () => {
-  class TestValidator extends Validator<{ value: string }> {
+  class TestValidator extends Validator {
     protected requiredMessage = "Test is required";
     protected pattern = /^[a-zA-Z]+$/;
     protected patternMessage = "Test must contain only letters";
@@ -25,7 +25,7 @@ describe("Validator", () => {
     it("should return an empty object if props is valid", () => {
       const validator = new TestValidator();
 
-      const result = validator.validate({ value: "test" });
+      const result = validator.validate("test");
 
       expect(result).toEqual({});
     });
@@ -35,7 +35,7 @@ describe("Validator", () => {
     it("should return an error if props is not valid", () => {
       const validator = new TestValidator();
 
-      const result = validator.validate({ value: "toto1" });
+      const result = validator.validate("toto1");
 
       expect(result).toEqual({
         pattern: "Test must contain only letters",
@@ -45,7 +45,7 @@ describe("Validator", () => {
     it("should return an empty object if props is valid", () => {
       const validator = new TestValidator();
 
-      const result = validator.validate({ value: "test" });
+      const result = validator.validate("test");
 
       expect(result).toEqual({});
     });
@@ -53,7 +53,7 @@ describe("Validator", () => {
     it("should trim the value before validating", () => {
       const validator = new TestValidator();
 
-      const result = validator.validate({ value: "   test" });
+      const result = validator.validate("   test");
 
       expect(result).toEqual({});
     });
@@ -63,7 +63,7 @@ describe("Validator", () => {
     it("should return an error if props is not valid", () => {
       const validator = new TestValidator();
 
-      const result = validator.validate({ value: "a".repeat(3) });
+      const result = validator.validate("a".repeat(3));
 
       expect(result).toEqual({
         min: "Test must be at least 4 characters long",
@@ -73,7 +73,7 @@ describe("Validator", () => {
     it("should return an empty object if props is valid", () => {
       const validator = new TestValidator();
 
-      const result = validator.validate({ value: "test" });
+      const result = validator.validate("test");
 
       expect(result).toEqual({});
     });
@@ -81,7 +81,7 @@ describe("Validator", () => {
     it("should trim the value before validating", () => {
       const validator = new TestValidator();
 
-      const result = validator.validate({ value: "   t" });
+      const result = validator.validate("   t");
 
       expect(result).toEqual({
         min: "Test must be at least 4 characters long",
@@ -93,7 +93,7 @@ describe("Validator", () => {
     it("should return an error if props is not valid", () => {
       const validator = new TestValidator();
 
-      const result = validator.validate({ value: "a".repeat(11) });
+      const result = validator.validate("a".repeat(11));
 
       expect(result).toEqual({
         max: "Test must be at most 10 characters long",
@@ -103,7 +103,7 @@ describe("Validator", () => {
     it("should return an empty object if props is valid", () => {
       const validator = new TestValidator();
 
-      const result = validator.validate({ value: "test" });
+      const result = validator.validate("test");
 
       expect(result).toEqual({});
     });
@@ -111,14 +111,14 @@ describe("Validator", () => {
     it("should trim the value before validating", () => {
       const validator = new TestValidator();
 
-      const result = validator.validate({ value: "      " + "a".repeat(10) });
+      const result = validator.validate("      " + "a".repeat(10));
 
       expect(result).toEqual({});
     });
   });
 
   describe("optional validation", () => {
-    class OptionalTestValidator extends Validator<{ value: string }> {
+    class OptionalTestValidator extends Validator {
       protected requiredMessage = "Test is required";
       protected pattern?: RegExp;
       protected patternMessage?: string;
@@ -131,7 +131,7 @@ describe("Validator", () => {
     it("should return an error if props is empty", () => {
       const validator = new OptionalTestValidator();
 
-      const result = validator.validate({ value: "" });
+      const result = validator.validate("");
 
       expect(result).toEqual({
         required: "Test is required",
@@ -141,7 +141,7 @@ describe("Validator", () => {
     it("should return an empty object if props is valid", () => {
       const validator = new OptionalTestValidator();
 
-      const result = validator.validate({ value: "test" });
+      const result = validator.validate("test");
 
       expect(result).toEqual({});
     });

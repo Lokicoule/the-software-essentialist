@@ -1,15 +1,11 @@
-interface ValidationError {
+export interface ValidationError {
   required?: string;
   pattern?: string;
   min?: string;
   max?: string;
 }
 
-interface BaseProps {
-  value: string;
-}
-
-export abstract class Validator<Props extends BaseProps> {
+export abstract class Validator {
   protected abstract requiredMessage?: string;
   protected abstract pattern?: RegExp;
   protected abstract patternMessage?: string;
@@ -18,63 +14,51 @@ export abstract class Validator<Props extends BaseProps> {
   protected abstract maxLength?: number;
   protected abstract maxLengthMessage?: string;
 
-  public validate(props: Props): ValidationError {
+  public validate(value: string): ValidationError {
     const errors: ValidationError[] = [];
 
-    errors.push(this.validateRequired(props));
-    errors.push(this.validatePattern(props));
-    errors.push(this.validateMinLength(props));
-    errors.push(this.validateMaxLength(props));
+    errors.push(this.validateRequired(value));
+    errors.push(this.validatePattern(value));
+    errors.push(this.validateMinLength(value));
+    errors.push(this.validateMaxLength(value));
 
     return this.mergeErrors(errors);
   }
 
-  private validateRequired(props: Props): ValidationError {
+  private validateRequired(value: string): ValidationError {
     const error: ValidationError = {} as ValidationError;
 
-    if (!props?.value) {
+    if (!value) {
       error.required = this.requiredMessage;
     }
 
     return error;
   }
 
-  private validatePattern(props: Props): ValidationError {
+  private validatePattern(value: string): ValidationError {
     const error: ValidationError = {} as ValidationError;
 
-    if (
-      props?.value &&
-      this.pattern &&
-      !this.pattern.test(props.value.trim())
-    ) {
+    if (value && this.pattern && !this.pattern.test(value?.trim())) {
       error.pattern = this.patternMessage;
     }
 
     return error;
   }
 
-  private validateMinLength(props: Props): ValidationError {
+  private validateMinLength(value: string): ValidationError {
     const error: ValidationError = {} as ValidationError;
 
-    if (
-      props?.value &&
-      this.minLength &&
-      props.value.trim().length < this.minLength
-    ) {
+    if (value && this.minLength && value.trim().length < this.minLength) {
       error.min = this.minLengthMessage;
     }
 
     return error;
   }
 
-  private validateMaxLength(props: Props): ValidationError {
+  private validateMaxLength(value: string): ValidationError {
     const error: ValidationError = {} as ValidationError;
 
-    if (
-      props?.value &&
-      this.maxLength &&
-      props.value.trim().length > this.maxLength
-    ) {
+    if (value && this.maxLength && value.trim().length > this.maxLength) {
       error.max = this.maxLengthMessage;
     }
 
