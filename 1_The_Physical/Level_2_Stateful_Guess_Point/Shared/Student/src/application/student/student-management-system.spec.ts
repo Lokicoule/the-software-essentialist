@@ -1,4 +1,3 @@
-import { Student } from "../../domain/student/core/student";
 import { EventBus } from "../../infra/event-bus";
 import { StudentManagementSystem } from "./student-management-system";
 
@@ -35,6 +34,25 @@ describe("StudentManagementSystem", () => {
       studentStudentManagementSystem.updateStudentFirstName(student!, "Jane");
 
     expect(updatedStudent?.firstName).toBe("Jane");
+    expect(handler).toHaveBeenCalledTimes(1);
+  });
+
+  it("should update a student's last name", () => {
+    const handler = jest.fn();
+    const eventBus = new EventBus();
+    eventBus.subscribe("LastNameUpdated", {
+      handle: handler,
+    });
+
+    const studentStudentManagementSystem: StudentManagementSystem =
+      new StudentManagementSystem(eventBus);
+    const student = studentStudentManagementSystem.createStudent("John", "Doe");
+    const updatedStudent = studentStudentManagementSystem.updateStudentLastName(
+      student!,
+      "Doe"
+    );
+
+    expect(updatedStudent?.lastName).toBe("Doe");
     expect(handler).toHaveBeenCalledTimes(1);
   });
 });
