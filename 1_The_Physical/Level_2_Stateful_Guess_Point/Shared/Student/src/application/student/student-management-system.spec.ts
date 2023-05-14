@@ -111,48 +111,55 @@ describe("StudentManagementSystem", () => {
     });
   });
 
-  it("should update a student's last name", () => {
-    eventBus.subscribe("LastNameUpdated", {
-      handle: handler,
+  describe("updateStudentLastName", () => {
+    beforeEach(() => {
+      eventBus.subscribe("LastNameUpdated", {
+        handle: handler,
+      });
     });
-    const studentStudentManagementSystem: StudentManagementSystem =
-      new StudentManagementSystem(eventBus);
-    const student = studentStudentManagementSystem.createStudent("John", "Doe");
 
-    const updatedStudent = studentStudentManagementSystem.updateStudentLastName(
-      student!,
-      "Doe"
-    );
-
-    expect(updatedStudent?.lastName).toBe("Doe");
-    expect(handler).toHaveBeenCalledTimes(1);
-  });
-
-  it("should fail if last name is invalid", () => {
-    const studentStudentManagementSystem: StudentManagementSystem =
-      new StudentManagementSystem(eventBus);
-    const student = studentStudentManagementSystem.createStudent("John", "Doe");
-
-    const updatedStudent = studentStudentManagementSystem.updateStudentLastName(
-      student!,
-      "D"
-    );
-
-    expect(updatedStudent).toBeNull();
-    expect(handler).not.toHaveBeenCalled();
-  });
-
-  it("should throw an Error if student does not exist", () => {
-    const studentStudentManagementSystem: StudentManagementSystem =
-      new StudentManagementSystem(eventBus);
-
-    expect(() =>
-      studentStudentManagementSystem.updateStudentLastName(
-        null as unknown as Student,
+    it("should update a student's last name", () => {
+      const studentStudentManagementSystem: StudentManagementSystem =
+        new StudentManagementSystem(eventBus);
+      const student = studentStudentManagementSystem.createStudent(
+        "John",
         "Doe"
-      )
-    ).toThrowError("InternalServerError: Student does not exist");
+      );
 
-    expect(handler).not.toHaveBeenCalled();
+      const updatedStudent =
+        studentStudentManagementSystem.updateStudentLastName(student!, "Doe");
+
+      expect(updatedStudent?.lastName).toBe("Doe");
+      expect(handler).toHaveBeenCalledTimes(1);
+    });
+
+    it("should fail if last name is invalid", () => {
+      const studentStudentManagementSystem: StudentManagementSystem =
+        new StudentManagementSystem(eventBus);
+      const student = studentStudentManagementSystem.createStudent(
+        "John",
+        "Doe"
+      );
+
+      const updatedStudent =
+        studentStudentManagementSystem.updateStudentLastName(student!, "D");
+
+      expect(updatedStudent).toBeNull();
+      expect(handler).not.toHaveBeenCalled();
+    });
+
+    it("should throw an Error if student does not exist", () => {
+      const studentStudentManagementSystem: StudentManagementSystem =
+        new StudentManagementSystem(eventBus);
+
+      expect(() =>
+        studentStudentManagementSystem.updateStudentLastName(
+          null as unknown as Student,
+          "Doe"
+        )
+      ).toThrowError("InternalServerError: Student does not exist");
+
+      expect(handler).not.toHaveBeenCalled();
+    });
   });
 });
