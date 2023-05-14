@@ -1,6 +1,7 @@
 interface BaseValidationError {
   required?: string;
   pattern?: string;
+  min?: string;
 }
 
 interface BaseProps {
@@ -14,15 +15,19 @@ export abstract class Validator<
   protected abstract requiredMessage: string;
   protected abstract pattern: RegExp;
   protected abstract patternMessage: string;
+  protected abstract minLength: number;
+  protected abstract minLengthMessage: string;
 
   public validate(props: Props): ValidationError {
-    let error = this.validateRequired(props);
+    const errors: ValidationError[] = [];
 
-    if (!error.required) {
-      error = this.validatePattern(props);
-    }
+    errors.push(this.validateRequired(props));
+    errors.push(this.validatePattern(props));
+    errors.push(this.validateMinLength(props));
 
-    return error;
+    console.log(errors);
+
+    return this.mergeErrors(errors);
   }
 
   private validateRequired(props: Props): ValidationError {
@@ -38,10 +43,32 @@ export abstract class Validator<
   private validatePattern(props: Props): ValidationError {
     const error: ValidationError = {} as ValidationError;
 
-    if (!this.pattern.test(props.value)) {
+    if (props?.value && !this.pattern.test(props.value)) {
+      console.log(this.pattern);
       error.pattern = this.patternMessage;
     }
 
+    console.log(error);
+
     return error;
+  }
+
+  private validateMinLength(props: Props): ValidationError {
+    const error: ValidationError = {} as ValidationError;
+
+    if (props?.value && props.value.length < this.minLength) {
+      error.min = this.minLengthMessage;
+    }
+
+    return error;
+  }
+
+  private mergeErrors(errors: ValidationError[]): ValidationError {
+    return errors.reduce((acc, error) => {
+      return {
+        ...acc,
+        ...error,
+      };
+    }, {} as ValidationError);
   }
 }

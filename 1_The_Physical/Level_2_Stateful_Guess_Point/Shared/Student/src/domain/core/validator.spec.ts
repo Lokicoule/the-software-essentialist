@@ -6,8 +6,10 @@ describe("Validator", () => {
     { required: string }
   > {
     protected requiredMessage = "Test is required";
-    protected pattern = /^test$/;
-    protected patternMessage = "Test must be equal to test";
+    protected pattern = /^[a-zA-Z]+$/;
+    protected patternMessage = "Test must contain only letters";
+    protected minLength = 4;
+    protected minLengthMessage = "Test must be at least 4 characters long";
   }
 
   describe("validateRequired", () => {
@@ -34,10 +36,30 @@ describe("Validator", () => {
     it("should return an error if props is not valid", () => {
       const validator = new TestValidator();
 
-      const result = validator.validate({ value: "toto" });
+      const result = validator.validate({ value: "toto1" });
 
       expect(result).toEqual({
-        pattern: "Test must be equal to test",
+        pattern: "Test must contain only letters",
+      });
+    });
+
+    it("should return an empty object if props is valid", () => {
+      const validator = new TestValidator();
+
+      const result = validator.validate({ value: "test" });
+
+      expect(result).toEqual({});
+    });
+  });
+
+  describe("validateMinLength", () => {
+    it("should return an error if props is not valid", () => {
+      const validator = new TestValidator();
+
+      const result = validator.validate({ value: "tes" });
+
+      expect(result).toEqual({
+        min: "Test must be at least 4 characters long",
       });
     });
 
