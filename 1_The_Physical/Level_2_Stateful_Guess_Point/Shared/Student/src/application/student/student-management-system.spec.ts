@@ -58,19 +58,42 @@ describe("StudentManagementSystem", () => {
     );
   });
 
-  it("should update a student's first name", () => {
-    eventBus.subscribe("FirstNameUpdated", {
-      handle: handler,
+  describe("updateStudentFirstName", () => {
+    it("should update a student's first name", () => {
+      eventBus.subscribe("FirstNameUpdated", {
+        handle: handler,
+      });
+
+      const studentStudentManagementSystem: StudentManagementSystem =
+        new StudentManagementSystem(eventBus);
+      const student = studentStudentManagementSystem.createStudent(
+        "John",
+        "Doe"
+      );
+      const updatedStudent =
+        studentStudentManagementSystem.updateStudentFirstName(student!, "Jane");
+
+      expect(updatedStudent?.firstName).toBe("Jane");
+      expect(handler).toHaveBeenCalledTimes(1);
     });
 
-    const studentStudentManagementSystem: StudentManagementSystem =
-      new StudentManagementSystem(eventBus);
-    const student = studentStudentManagementSystem.createStudent("John", "Doe");
-    const updatedStudent =
-      studentStudentManagementSystem.updateStudentFirstName(student!, "Jane");
+    it("should fail if first name is invalid", () => {
+      eventBus.subscribe("FirstNameUpdated", {
+        handle: handler,
+      });
 
-    expect(updatedStudent?.firstName).toBe("Jane");
-    expect(handler).toHaveBeenCalledTimes(1);
+      const studentStudentManagementSystem: StudentManagementSystem =
+        new StudentManagementSystem(eventBus);
+      const student = studentStudentManagementSystem.createStudent(
+        "John",
+        "Doe"
+      );
+      const updatedStudent =
+        studentStudentManagementSystem.updateStudentFirstName(student!, "J");
+
+      expect(updatedStudent).toBeNull();
+      expect(handler).not.toHaveBeenCalled();
+    });
   });
 
   it("should update a student's last name", () => {
