@@ -56,7 +56,7 @@ describe("Student", () => {
       expect(student.getError()).toEqual(
         expect.objectContaining({
           firstName: {
-            min: "Firstname must be at least 2 characters long",
+            min: "First name must be at least 2 characters long",
           },
         })
       );
@@ -74,7 +74,7 @@ describe("Student", () => {
       expect(student.getError()).toEqual(
         expect.objectContaining({
           lastName: {
-            min: "Lastname must be at least 2 characters long",
+            min: "Last name must be at least 2 characters long",
           },
         })
       );
@@ -92,10 +92,10 @@ describe("Student", () => {
       expect(student.getError()).toEqual(
         expect.objectContaining({
           firstName: {
-            min: "Firstname must be at least 2 characters long",
+            min: "First name must be at least 2 characters long",
           },
           lastName: {
-            min: "Lastname must be at least 2 characters long",
+            min: "Last name must be at least 2 characters long",
           },
         })
       );
@@ -161,7 +161,7 @@ describe("Student", () => {
       expect(updatedStudent.getError()).toEqual(
         expect.objectContaining({
           firstName: {
-            min: "Firstname must be at least 2 characters long",
+            min: "First name must be at least 2 characters long",
           },
         })
       );
@@ -228,7 +228,7 @@ describe("Student", () => {
       expect(updatedStudent.getError()).toEqual(
         expect.objectContaining({
           lastName: {
-            min: "Lastname must be at least 2 characters long",
+            min: "Last name must be at least 2 characters long",
           },
         })
       );

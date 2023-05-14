@@ -5,7 +5,7 @@ export interface ValidationError {
   max?: string;
 }
 
-export abstract class Validator {
+export abstract class StringValidator {
   protected abstract requiredMessage?: string;
   protected abstract pattern?: RegExp;
   protected abstract patternMessage?: string;

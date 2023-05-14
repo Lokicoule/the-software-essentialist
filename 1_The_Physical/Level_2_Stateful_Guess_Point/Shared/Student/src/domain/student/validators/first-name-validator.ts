@@ -1,8 +1,8 @@
-import { ValidationError, Validator } from "../../core/validator";
+import { ValidationError, StringValidator } from "../../core/validator";
 
 export interface FirstNameValidationError extends ValidationError {}
 
-export class FirstNameValidator extends Validator {
+export class FirstNameValidator extends StringValidator {
   protected requiredMessage = "First name is required";
   protected pattern = /^[a-zA-Z]+$/;
   protected patternMessage = "First name must contain only letters";

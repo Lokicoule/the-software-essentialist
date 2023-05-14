@@ -1,7 +1,7 @@
-import { Validator } from "./validator";
+import { StringValidator } from "./validator";
 
 describe("Validator", () => {
-  class TestValidator extends Validator {
+  class TestValidator extends StringValidator {
     protected requiredMessage = "Test is required";
     protected pattern = /^[a-zA-Z]+$/;
     protected patternMessage = "Test must contain only letters";
@@ -118,7 +118,7 @@ describe("Validator", () => {
   });
 
   describe("optional validation", () => {
-    class OptionalTestValidator extends Validator {
+    class OptionalTestValidator extends StringValidator {
       protected requiredMessage = "Test is required";
       protected pattern?: RegExp;
       protected patternMessage?: string;
