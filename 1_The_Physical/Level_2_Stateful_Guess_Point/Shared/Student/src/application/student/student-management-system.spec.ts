@@ -20,4 +20,21 @@ describe("StudentManagementSystem", () => {
     expect(student?.email).toBe("doejo@essentialist.dev");
     expect(handler).toHaveBeenCalledTimes(1);
   });
+
+  it("should update a student's first name", () => {
+    const handler = jest.fn();
+    const eventBus = new EventBus();
+    eventBus.subscribe("FirstNameUpdated", {
+      handle: handler,
+    });
+
+    const studentStudentManagementSystem: StudentManagementSystem =
+      new StudentManagementSystem(eventBus);
+    const student = studentStudentManagementSystem.createStudent("John", "Doe");
+    const updatedStudent =
+      studentStudentManagementSystem.updateStudentFirstName(student!, "Jane");
+
+    expect(updatedStudent?.firstName).toBe("Jane");
+    expect(handler).toHaveBeenCalledTimes(1);
+  });
 });

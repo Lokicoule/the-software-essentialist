@@ -14,4 +14,19 @@ export class StudentManagementSystem {
       return null;
     }
   }
+
+  public updateStudentFirstName(
+    student: Student,
+    firstName: string
+  ): Student | null {
+    const result = student.updateFirstName(firstName, this.eventBus);
+
+    if (result.isSuccess()) {
+      console.log("First name updated", result.getValue());
+      return result.getValue();
+    } else {
+      console.log("First name not updated", result.getError());
+      return null;
+    }
+  }
 }
