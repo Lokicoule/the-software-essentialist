@@ -1,6 +1,9 @@
 import { Result } from "../../../shared/Result";
 import { ValueObject } from "../../core";
-import { EmailValidationError } from "../validators/EmailValidator";
+import {
+  EmailValidationError,
+  EmailValidator,
+} from "../validators/EmailValidator";
 
 interface EmailProps {
   value: string;
@@ -18,7 +21,7 @@ export class Email extends ValueObject<EmailProps> {
   }
 
   public static create(value: string): Result<Email, EmailValidationError> {
-    const error = Email.validate(value);
+    const error = new EmailValidator().validate(value);
 
     if (
       Object.values(error).some((props) => Object.values(props).some(Boolean))
@@ -39,23 +42,6 @@ export class Email extends ValueObject<EmailProps> {
     }
 
     return Email.create(`${local}@${Email.domain}`);
-  }
-
-  private static validate(value: string): EmailValidationError {
-    const error: EmailValidationError = {};
-
-    if (!value) {
-      error.required = "Email is required";
-    } else {
-      value = value.toLowerCase().trim();
-
-      const domain = value.split("@")[1];
-      if (domain !== Email.domain) {
-        error.domain = `Email must be from '${Email.domain}' domain`;
-      }
-    }
-
-    return error;
   }
 
   public get value(): string {
