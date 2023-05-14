@@ -24,14 +24,17 @@ describe("StudentManagementSystem", () => {
     });
 
     it("should create a student", () => {
+      // Arrange
       const studentStudentManagementSystem: StudentManagementSystem =
         new StudentManagementSystem(eventBus);
 
+      // Act
       const student = studentStudentManagementSystem.createStudent(
         "John",
         "Doe"
       );
 
+      // Assert
       expect(student).not.toBeNull();
       expect(student?.firstName).toBe("John");
       expect(student?.lastName).toBe("Doe");
@@ -45,14 +48,17 @@ describe("StudentManagementSystem", () => {
     ])(
       "should fail if %s name is invalid",
       (_name: string, firstName: string, lastName: string) => {
+        // Arrange
         const studentStudentManagementSystem: StudentManagementSystem =
           new StudentManagementSystem(eventBus);
 
+        // Act
         const student = studentStudentManagementSystem.createStudent(
           firstName,
           lastName
         );
 
+        // Assert
         expect(student).toBeNull();
         expect(handler).not.toHaveBeenCalled();
       }
@@ -67,6 +73,7 @@ describe("StudentManagementSystem", () => {
     });
 
     it("should update a student's first name", () => {
+      // Arrange
       const studentStudentManagementSystem: StudentManagementSystem =
         new StudentManagementSystem(eventBus);
       const student = studentStudentManagementSystem.createStudent(
@@ -74,14 +81,17 @@ describe("StudentManagementSystem", () => {
         "Doe"
       );
 
+      // Act
       const updatedStudent =
         studentStudentManagementSystem.updateStudentFirstName(student!, "Jane");
 
+      // Assert
       expect(updatedStudent?.firstName).toBe("Jane");
       expect(handler).toHaveBeenCalledTimes(1);
     });
 
     it("should fail if first name is invalid", () => {
+      // Arrange
       const studentStudentManagementSystem: StudentManagementSystem =
         new StudentManagementSystem(eventBus);
       const student = studentStudentManagementSystem.createStudent(
@@ -89,17 +99,21 @@ describe("StudentManagementSystem", () => {
         "Doe"
       );
 
+      // Act
       const updatedStudent =
         studentStudentManagementSystem.updateStudentFirstName(student!, "J");
 
+      // Assert
       expect(updatedStudent).toBeNull();
       expect(handler).not.toHaveBeenCalled();
     });
 
     it("should throw an Error if student does not exist", () => {
+      // Arrange
       const studentStudentManagementSystem: StudentManagementSystem =
         new StudentManagementSystem(eventBus);
 
+      // Act & Assert
       expect(() =>
         studentStudentManagementSystem.updateStudentFirstName(
           null as unknown as Student,
@@ -107,6 +121,7 @@ describe("StudentManagementSystem", () => {
         )
       ).toThrowError("InternalServerError: Student does not exist");
 
+      // Assert
       expect(handler).not.toHaveBeenCalled();
     });
   });
@@ -119,6 +134,7 @@ describe("StudentManagementSystem", () => {
     });
 
     it("should update a student's last name", () => {
+      // Arrange
       const studentStudentManagementSystem: StudentManagementSystem =
         new StudentManagementSystem(eventBus);
       const student = studentStudentManagementSystem.createStudent(
@@ -126,14 +142,17 @@ describe("StudentManagementSystem", () => {
         "Doe"
       );
 
+      // Act
       const updatedStudent =
         studentStudentManagementSystem.updateStudentLastName(student!, "Doe");
 
+      // Assert
       expect(updatedStudent?.lastName).toBe("Doe");
       expect(handler).toHaveBeenCalledTimes(1);
     });
 
     it("should fail if last name is invalid", () => {
+      // Arrange
       const studentStudentManagementSystem: StudentManagementSystem =
         new StudentManagementSystem(eventBus);
       const student = studentStudentManagementSystem.createStudent(
@@ -141,17 +160,21 @@ describe("StudentManagementSystem", () => {
         "Doe"
       );
 
+      // Act
       const updatedStudent =
         studentStudentManagementSystem.updateStudentLastName(student!, "D");
 
+      // Assert
       expect(updatedStudent).toBeNull();
       expect(handler).not.toHaveBeenCalled();
     });
 
     it("should throw an Error if student does not exist", () => {
+      // Arrange
       const studentStudentManagementSystem: StudentManagementSystem =
         new StudentManagementSystem(eventBus);
 
+      // Act & Assert
       expect(() =>
         studentStudentManagementSystem.updateStudentLastName(
           null as unknown as Student,
@@ -159,6 +182,7 @@ describe("StudentManagementSystem", () => {
         )
       ).toThrowError("InternalServerError: Student does not exist");
 
+      // Assert
       expect(handler).not.toHaveBeenCalled();
     });
   });
