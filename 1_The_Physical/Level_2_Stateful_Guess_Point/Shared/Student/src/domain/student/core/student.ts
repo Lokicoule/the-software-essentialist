@@ -10,10 +10,10 @@ import {
   Email,
   EmailValidationError,
   FirstName,
-  FirstNameValidationError,
   LastName,
   LastNameValidationError,
 } from "../value-objects";
+import { FirstNameValidationError } from "../validators/first-name-validator";
 
 interface StudentProps {
   firstName: string;
