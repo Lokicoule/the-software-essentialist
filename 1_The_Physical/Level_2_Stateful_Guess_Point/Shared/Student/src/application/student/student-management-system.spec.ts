@@ -47,6 +47,19 @@ describe("StudentManagementSystem", () => {
       expect(student).toBeNull();
       expect(handler).not.toHaveBeenCalled();
     });
+
+    it("should not create a student with invalid last name", () => {
+      eventBus.subscribe("StudentCreated", {
+        handle: handler,
+      });
+
+      const studentStudentManagementSystem: StudentManagementSystem =
+        new StudentManagementSystem(eventBus);
+      const student = studentStudentManagementSystem.createStudent("John", "D");
+
+      expect(student).toBeNull();
+      expect(handler).not.toHaveBeenCalled();
+    });
   });
 
   it("should update a student's first name", () => {
