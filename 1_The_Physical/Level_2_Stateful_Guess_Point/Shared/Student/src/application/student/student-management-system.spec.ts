@@ -35,31 +35,27 @@ describe("StudentManagementSystem", () => {
       expect(handler).toHaveBeenCalledTimes(1);
     });
 
-    it("should not create a student with invalid first name", () => {
-      eventBus.subscribe("StudentCreated", {
-        handle: handler,
-      });
+    it.each([
+      ["first", "J", "Doe"],
+      ["last", "John", "D"],
+    ])(
+      "should fail if %s name is invalid",
+      (_name: string, firstName: string, lastName: string) => {
+        eventBus.subscribe("StudentCreated", {
+          handle: handler,
+        });
 
-      const studentStudentManagementSystem: StudentManagementSystem =
-        new StudentManagementSystem(eventBus);
-      const student = studentStudentManagementSystem.createStudent("J", "Doe");
+        const studentStudentManagementSystem: StudentManagementSystem =
+          new StudentManagementSystem(eventBus);
+        const student = studentStudentManagementSystem.createStudent(
+          firstName,
+          lastName
+        );
 
-      expect(student).toBeNull();
-      expect(handler).not.toHaveBeenCalled();
-    });
-
-    it("should not create a student with invalid last name", () => {
-      eventBus.subscribe("StudentCreated", {
-        handle: handler,
-      });
-
-      const studentStudentManagementSystem: StudentManagementSystem =
-        new StudentManagementSystem(eventBus);
-      const student = studentStudentManagementSystem.createStudent("John", "D");
-
-      expect(student).toBeNull();
-      expect(handler).not.toHaveBeenCalled();
-    });
+        expect(student).toBeNull();
+        expect(handler).not.toHaveBeenCalled();
+      }
+    );
   });
 
   it("should update a student's first name", () => {
