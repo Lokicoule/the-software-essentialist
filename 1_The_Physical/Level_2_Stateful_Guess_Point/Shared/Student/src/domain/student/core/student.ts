@@ -11,9 +11,9 @@ import {
   EmailValidationError,
   FirstName,
   LastName,
-  LastNameValidationError,
 } from "../value-objects";
 import { FirstNameValidationError } from "../validators/first-name-validator";
+import { LastNameValidationError } from "../validators/last-name-validator";
 
 interface StudentProps {
   firstName: string;
