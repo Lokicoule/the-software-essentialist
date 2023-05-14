@@ -52,6 +52,14 @@ describe("Validator", () => {
 
       expect(result).toEqual({});
     });
+
+    it("should trim the value before validating", () => {
+      const validator = new TestValidator();
+
+      const result = validator.validate({ value: "   test" });
+
+      expect(result).toEqual({});
+    });
   });
 
   describe("validateMinLength", () => {
@@ -72,6 +80,16 @@ describe("Validator", () => {
 
       expect(result).toEqual({});
     });
+
+    it("should trim the value before validating", () => {
+      const validator = new TestValidator();
+
+      const result = validator.validate({ value: "   t" });
+
+      expect(result).toEqual({
+        min: "Test must be at least 4 characters long",
+      });
+    });
   });
 
   describe("validateMaxLength", () => {
@@ -89,6 +107,14 @@ describe("Validator", () => {
       const validator = new TestValidator();
 
       const result = validator.validate({ value: "test" });
+
+      expect(result).toEqual({});
+    });
+
+    it("should trim the value before validating", () => {
+      const validator = new TestValidator();
+
+      const result = validator.validate({ value: "      " + "a".repeat(10) });
 
       expect(result).toEqual({});
     });

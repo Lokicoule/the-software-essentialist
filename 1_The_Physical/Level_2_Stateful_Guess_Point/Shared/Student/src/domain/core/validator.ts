@@ -45,7 +45,7 @@ export abstract class Validator<
   private validatePattern(props: Props): ValidationError {
     const error: ValidationError = {} as ValidationError;
 
-    if (props?.value && !this.pattern.test(props.value)) {
+    if (props?.value && !this.pattern.test(props.value.trim())) {
       console.log(this.pattern);
       error.pattern = this.patternMessage;
     }
@@ -58,7 +58,7 @@ export abstract class Validator<
   private validateMinLength(props: Props): ValidationError {
     const error: ValidationError = {} as ValidationError;
 
-    if (props?.value && props.value.length < this.minLength) {
+    if (props?.value && props.value.trim().length < this.minLength) {
       error.min = this.minLengthMessage;
     }
 
@@ -68,7 +68,7 @@ export abstract class Validator<
   private validateMaxLength(props: Props): ValidationError {
     const error: ValidationError = {} as ValidationError;
 
-    if (props?.value && props.value.length > this.maxLength) {
+    if (props?.value && props.value.trim().length > this.maxLength) {
       error.max = this.maxLengthMessage;
     }
 
