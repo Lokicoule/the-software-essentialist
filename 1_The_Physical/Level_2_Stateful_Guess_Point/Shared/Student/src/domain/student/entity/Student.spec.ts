@@ -1,5 +1,5 @@
-import { EventBus } from "../../../infra/event-bus";
-import { Student } from "./student";
+import { EventBus } from "../../../infra/EventBus";
+import { Student } from "./Student";
 
 describe("Student", () => {
   let eventBus: EventBus;

@@ -1,4 +1,4 @@
-import { FirstNameValidator } from "./first-name-validator";
+import { FirstNameValidator } from "./FirstNameValidator";
 
 describe("FirstNameValidator", () => {
   let firstNameValidator: FirstNameValidator;

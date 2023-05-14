@@ -1,4 +1,4 @@
-import { LastName } from "./last-name";
+import { LastName } from "./LastName";
 
 describe("LastName", () => {
   describe("create", () => {

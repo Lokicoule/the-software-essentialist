@@ -1,4 +1,4 @@
-import { ValidationError, StringValidator } from "../../core/validator";
+import { ValidationError, StringValidator } from "../../core/Validator";
 
 export interface LastNameValidationError extends ValidationError {}
 

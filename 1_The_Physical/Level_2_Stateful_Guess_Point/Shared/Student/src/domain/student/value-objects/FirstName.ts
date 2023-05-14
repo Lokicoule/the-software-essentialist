@@ -1,9 +1,6 @@
-import { Result } from "../../../shared/result";
-import { ValueObject } from "../../core/value-object";
-import {
-  FirstNameValidationError,
-  FirstNameValidator,
-} from "../validators/first-name-validator";
+import { Result } from "../../../shared/Result";
+import { ValueObject } from "../../core";
+import { FirstNameValidationError, FirstNameValidator } from "../validators";
 
 interface FirstNameProps {
   value: string;

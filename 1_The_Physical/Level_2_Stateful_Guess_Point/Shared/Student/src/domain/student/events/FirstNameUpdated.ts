@@ -1,5 +1,5 @@
-import { Student } from "../core/student";
-import { DomainEvent } from "../../core/domain-event";
+import { Student } from "../entity/Student";
+import { DomainEvent } from "../../core/DomainEvent";
 
 export class FirstNameUpdated implements DomainEvent {
   public readonly name = "FirstNameUpdated";

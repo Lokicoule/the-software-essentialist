@@ -1,5 +1,5 @@
-import { DomainEvent } from "../domain/core/domain-event";
-import { EventHandler } from "./event-handler";
+import { DomainEvent } from "../domain/core/DomainEvent";
+import { EventHandler } from "./EventHandler";
 
 export class EventBus {
   private subscribers: Map<string, EventHandler<DomainEvent>> = new Map();

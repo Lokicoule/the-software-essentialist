@@ -1,4 +1,4 @@
-import { LastNameValidator } from "./last-name-validator";
+import { LastNameValidator } from "./LastNameValidator";
 
 describe("LastNameValidator", () => {
   let lastNameValidator: LastNameValidator;

@@ -1,4 +1,4 @@
-import { ValueObject } from "./value-object";
+import { ValueObject } from "./ValueObject";
 
 describe("ValueObject", () => {
   describe("when creating a value object", () => {

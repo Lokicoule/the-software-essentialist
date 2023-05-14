@@ -1,5 +1,5 @@
-import { DomainEvent } from "../domain/core/domain-event";
-import { EventBus } from "./event-bus";
+import { DomainEvent } from "../domain/core";
+import { EventBus } from "./EventBus";
 
 describe("EventBus", () => {
   let eventBus: EventBus;

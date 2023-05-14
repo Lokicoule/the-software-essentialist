@@ -1,5 +1,5 @@
-import { Result } from "../../../shared/result";
-import { ValueObject } from "../../core/value-object";
+import { Result } from "../../../shared/Result";
+import { ValueObject } from "../../core";
 
 interface EmailProps {
   value: string;

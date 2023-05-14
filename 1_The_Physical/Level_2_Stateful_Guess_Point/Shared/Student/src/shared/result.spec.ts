@@ -1,4 +1,4 @@
-import { Result } from "./result";
+import { Result } from "./Result";
 
 describe("Result", () => {
   describe("success", () => {

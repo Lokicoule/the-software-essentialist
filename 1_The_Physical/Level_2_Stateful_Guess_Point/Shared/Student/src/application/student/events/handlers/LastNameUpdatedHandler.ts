@@ -1,5 +1,5 @@
-import { LastNameUpdated } from "../../../../domain/student/events/last-name-updated";
-import { EventHandler } from "../../../../infra/event-handler";
+import { LastNameUpdated } from "../../../../domain/student/events/LastNameUpdated";
+import { EventHandler } from "../../../../infra/EventHandler";
 
 export class LastNameUpdatedEventHandler extends EventHandler<LastNameUpdated> {
   public handle(event: LastNameUpdated) {

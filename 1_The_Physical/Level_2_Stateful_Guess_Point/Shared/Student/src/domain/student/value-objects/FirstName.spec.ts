@@ -1,4 +1,4 @@
-import { FirstName } from "./first-name";
+import { FirstName } from "./FirstName";
 
 describe("FirstName", () => {
   it("should fail if value is empty", () => {

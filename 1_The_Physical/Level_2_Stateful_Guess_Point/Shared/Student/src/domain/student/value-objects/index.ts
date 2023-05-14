@@ -1,3 +1,3 @@
-export * from "./first-name";
-export * from "./last-name";
-export * from "./email";
+export * from "./FirstName";
+export * from "./LastName";
+export * from "./Email";

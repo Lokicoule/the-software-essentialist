@@ -1,6 +1,6 @@
-import { Student } from "../../domain/student/core/student";
-import { EventBus } from "../../infra/event-bus";
-import { StudentManagementSystem } from "./student-management-system";
+import { Student } from "../../domain/student/entity/Student";
+import { EventBus } from "../../infra/EventBus";
+import { StudentManagementSystem } from "./StudentManagementSystem";
 
 describe("StudentManagementSystem", () => {
   let eventBus: EventBus;

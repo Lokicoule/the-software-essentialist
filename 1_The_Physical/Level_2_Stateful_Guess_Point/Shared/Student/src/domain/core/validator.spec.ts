@@ -1,4 +1,4 @@
-import { StringValidator } from "./validator";
+import { StringValidator } from "./Validator";
 
 describe("Validator", () => {
   class TestValidator extends StringValidator {

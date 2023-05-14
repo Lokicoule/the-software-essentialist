@@ -1,5 +1,5 @@
-import { Student } from "../../domain/student/core/student";
-import { EventBus } from "../../infra/event-bus";
+import { Student } from "../../domain/student/entity";
+import { EventBus } from "../../infra/EventBus";
 
 export class StudentManagementSystem {
   constructor(private readonly eventBus: EventBus) {}
