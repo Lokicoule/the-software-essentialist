@@ -2,9 +2,20 @@ import { EventBus } from "../../infra/event-bus";
 import { StudentManagementSystem } from "./student-management-system";
 
 describe("StudentManagementSystem", () => {
+  let eventBus: EventBus;
+  let handler: jest.Mock;
+
+  beforeEach(() => {
+    eventBus = new EventBus();
+    handler = jest.fn();
+  });
+
+  afterEach(() => {
+    eventBus.clear();
+    handler.mockClear();
+  });
+
   it("should create a student", () => {
-    const handler = jest.fn();
-    const eventBus = new EventBus();
     eventBus.subscribe("StudentCreated", {
       handle: handler,
     });
@@ -21,8 +32,6 @@ describe("StudentManagementSystem", () => {
   });
 
   it("should update a student's first name", () => {
-    const handler = jest.fn();
-    const eventBus = new EventBus();
     eventBus.subscribe("FirstNameUpdated", {
       handle: handler,
     });
@@ -38,8 +47,6 @@ describe("StudentManagementSystem", () => {
   });
 
   it("should update a student's last name", () => {
-    const handler = jest.fn();
-    const eventBus = new EventBus();
     eventBus.subscribe("LastNameUpdated", {
       handle: handler,
     });
