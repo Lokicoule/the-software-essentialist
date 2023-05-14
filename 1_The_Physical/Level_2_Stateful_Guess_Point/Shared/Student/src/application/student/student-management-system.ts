@@ -36,14 +36,16 @@ export class StudentManagementSystem {
     student: Student,
     lastName: string
   ): Student | null {
-    const result = student.updateLastName(lastName, this.eventBus);
+    const result = student?.updateLastName(lastName, this.eventBus);
 
-    if (result.isSuccess()) {
+    if (result?.isSuccess()) {
       console.log("Last name updated", result.getValue());
       return result.getValue();
-    } else {
+    } else if (result?.isFailure()) {
       console.log("Last name not updated", result.getError());
       return null;
     }
+
+    throw new Error("InternalServerError: Student does not exist");
   }
 }

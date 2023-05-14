@@ -123,4 +123,18 @@ describe("StudentManagementSystem", () => {
     expect(updatedStudent?.lastName).toBe("Doe");
     expect(handler).toHaveBeenCalledTimes(1);
   });
+
+  it("should throw an Error if student does not exist", () => {
+    const studentStudentManagementSystem: StudentManagementSystem =
+      new StudentManagementSystem(eventBus);
+
+    expect(() =>
+      studentStudentManagementSystem.updateStudentLastName(
+        null as unknown as Student,
+        "Doe"
+      )
+    ).toThrowError("InternalServerError: Student does not exist");
+
+    expect(handler).not.toHaveBeenCalled();
+  });
 });
