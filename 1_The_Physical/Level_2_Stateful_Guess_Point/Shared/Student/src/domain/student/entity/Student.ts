@@ -4,14 +4,10 @@ import { EventBus } from "../../../infra/EventBus";
 import { Result } from "../../../shared/Result";
 import { AggregateRoot } from "../../core/AggregateRoot";
 import { FirstNameUpdated, LastNameUpdated, StudentCreated } from "../events";
-import {
-  Email,
-  EmailValidationError,
-  FirstName,
-  LastName,
-} from "../value-objects";
+import { Email, FirstName, LastName } from "../value-objects";
 import { FirstNameValidationError } from "../validators/FirstNameValidator";
 import { LastNameValidationError } from "../validators/LastNameValidator";
+import { EmailValidationError } from "../validators/EmailValidator";
 
 interface StudentProps {
   firstName: string;

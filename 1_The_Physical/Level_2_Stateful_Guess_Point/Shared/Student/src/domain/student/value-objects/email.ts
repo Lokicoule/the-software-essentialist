@@ -1,5 +1,6 @@
 import { Result } from "../../../shared/Result";
 import { ValueObject } from "../../core";
+import { EmailValidationError } from "../validators/EmailValidator";
 
 interface EmailProps {
   value: string;
@@ -7,11 +8,6 @@ interface EmailProps {
 
 interface EmailGeneratorProps {
   local: string;
-}
-
-export interface EmailValidationError {
-  required?: string;
-  domain?: string;
 }
 
 export class Email extends ValueObject<EmailProps> {

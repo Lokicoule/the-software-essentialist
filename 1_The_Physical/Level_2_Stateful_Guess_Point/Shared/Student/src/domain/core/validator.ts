@@ -65,7 +65,7 @@ export abstract class StringValidator {
     return error;
   }
 
-  private mergeErrors(errors: ValidationError[]): ValidationError {
+  protected mergeErrors(errors: ValidationError[]): ValidationError {
     return errors.reduce((acc, error) => {
       return {
         ...acc,
