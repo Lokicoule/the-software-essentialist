@@ -1,23 +1,30 @@
 import { Validator } from "./validator";
 
 describe("Validator", () => {
+  class TestValidator extends Validator<
+    { test: string },
+    { required: string }
+  > {
+    protected requiredMessage = "Test is required";
+  }
+
   describe("validate", () => {
-    it("should return validation error", () => {
-      class ValidatorMock extends Validator<{}, { value: string }> {
-        public validate(): { value: string } {
-          return {
-            value: "Value is required",
-          };
-        }
-      }
+    it("should return an error if props is empty", () => {
+      const validator = new TestValidator();
 
-      const validator = new ValidatorMock();
-
-      const result = validator.validate();
+      const result = validator.validate(null as any);
 
       expect(result).toEqual({
-        value: "Value is required",
+        required: "Test is required",
       });
+    });
+
+    it("should return an empty object if props is valid", () => {
+      const validator = new TestValidator();
+
+      const result = validator.validate({ test: "test" });
+
+      expect(result).toEqual({});
     });
   });
 });
