@@ -17,11 +17,13 @@ describe("StudentManagementSystem", () => {
   });
 
   describe("createStudent", () => {
-    it("should create a student", () => {
+    beforeEach(() => {
       eventBus.subscribe("StudentCreated", {
         handle: handler,
       });
+    });
 
+    it("should create a student", () => {
       const studentStudentManagementSystem: StudentManagementSystem =
         new StudentManagementSystem(eventBus);
       const student = studentStudentManagementSystem.createStudent(
@@ -42,10 +44,6 @@ describe("StudentManagementSystem", () => {
     ])(
       "should fail if %s name is invalid",
       (_name: string, firstName: string, lastName: string) => {
-        eventBus.subscribe("StudentCreated", {
-          handle: handler,
-        });
-
         const studentStudentManagementSystem: StudentManagementSystem =
           new StudentManagementSystem(eventBus);
         const student = studentStudentManagementSystem.createStudent(
@@ -60,11 +58,13 @@ describe("StudentManagementSystem", () => {
   });
 
   describe("updateStudentFirstName", () => {
-    it("should update a student's first name", () => {
+    beforeEach(() => {
       eventBus.subscribe("FirstNameUpdated", {
         handle: handler,
       });
+    });
 
+    it("should update a student's first name", () => {
       const studentStudentManagementSystem: StudentManagementSystem =
         new StudentManagementSystem(eventBus);
       const student = studentStudentManagementSystem.createStudent(
@@ -79,10 +79,6 @@ describe("StudentManagementSystem", () => {
     });
 
     it("should fail if first name is invalid", () => {
-      eventBus.subscribe("FirstNameUpdated", {
-        handle: handler,
-      });
-
       const studentStudentManagementSystem: StudentManagementSystem =
         new StudentManagementSystem(eventBus);
       const student = studentStudentManagementSystem.createStudent(
@@ -97,10 +93,6 @@ describe("StudentManagementSystem", () => {
     });
 
     it("should throw an Error if student does not exist", () => {
-      eventBus.subscribe("FirstNameUpdated", {
-        handle: handler,
-      });
-
       const studentStudentManagementSystem: StudentManagementSystem =
         new StudentManagementSystem(eventBus);
 
