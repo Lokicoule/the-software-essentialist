@@ -6,15 +6,10 @@ import { LastNameUpdated } from "../domain/student/events/last-name-updated";
 import { StudentCreated } from "../domain/student/events/student-created";
 import { EventBus } from "./event-bus";
 
-EventBus.getInstance().subscribe(
-  FirstNameUpdated.name,
-  new FirstNameUpdatedEventHandler()
-);
-EventBus.getInstance().subscribe(
-  LastNameUpdated.name,
-  new LastNameUpdatedEventHandler()
-);
-EventBus.getInstance().subscribe(
-  StudentCreated.name,
-  new StudentCreatedEventHandler()
-);
+const eventBus = new EventBus();
+
+eventBus.subscribe(FirstNameUpdated.name, new FirstNameUpdatedEventHandler());
+eventBus.subscribe(LastNameUpdated.name, new LastNameUpdatedEventHandler());
+eventBus.subscribe(StudentCreated.name, new StudentCreatedEventHandler());
+
+export { eventBus };

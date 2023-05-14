@@ -2,19 +2,7 @@ import { DomainEvent } from "../domain/core/domain-event";
 import { EventHandler } from "./event-handler";
 
 export class EventBus {
-  private static instance: EventBus;
-
   private subscribers: Map<string, EventHandler<DomainEvent>> = new Map();
-
-  private constructor() {}
-
-  public static getInstance(): EventBus {
-    if (!EventBus.instance) {
-      EventBus.instance = new EventBus();
-    }
-
-    return EventBus.instance;
-  }
 
   public publish(event: DomainEvent): void {
     const eventName = event.name;

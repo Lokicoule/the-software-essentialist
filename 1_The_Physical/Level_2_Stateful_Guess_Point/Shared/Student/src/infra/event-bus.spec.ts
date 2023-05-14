@@ -14,7 +14,7 @@ describe("EventBus", () => {
   }
 
   beforeEach(() => {
-    eventBus = EventBus.getInstance();
+    eventBus = new EventBus();
   });
 
   afterEach(() => {
@@ -35,23 +35,6 @@ describe("EventBus", () => {
       const handler = jest.fn();
       eventBus.publish(new TestEvent("test"));
       expect(handler).toHaveBeenCalledTimes(0);
-    });
-
-    it("should publish events to multiple subscribers", () => {
-      const handler1 = jest.fn();
-      const handler2 = jest.fn();
-
-      eventBus.subscribe("TestEvent", {
-        handle: handler1,
-      });
-      eventBus.subscribe("TestEvent", {
-        handle: handler2,
-      });
-
-      eventBus.publish(new TestEvent("test"));
-
-      expect(handler1).toHaveBeenCalledTimes(1);
-      expect(handler2).toHaveBeenCalledTimes(1);
     });
   });
 

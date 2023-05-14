@@ -2,6 +2,16 @@ import { EventBus } from "../../../infra/event-bus";
 import { Student } from "./student";
 
 describe("Student", () => {
+  let eventBus: EventBus;
+
+  beforeEach(() => {
+    eventBus = new EventBus();
+  });
+
+  afterEach(() => {
+    eventBus.clear();
+  });
+
   describe("create", () => {
     it("should create a student", () => {
       // Arrange
@@ -23,12 +33,12 @@ describe("Student", () => {
       const firstName = "Joe";
       const lastName = "Doe";
       const studentCreatedHandler = jest.fn();
-      EventBus.getInstance().subscribe("StudentCreated", {
+      eventBus.subscribe("StudentCreated", {
         handle: studentCreatedHandler,
       });
 
       // Act
-      Student.create({ firstName, lastName }, EventBus.getInstance());
+      Student.create({ firstName, lastName }, eventBus);
 
       // Assert
       expect(studentCreatedHandler).toHaveBeenCalledTimes(1);
@@ -103,7 +113,7 @@ describe("Student", () => {
       const student = Student.create({ firstName, lastName });
       const updatedStudent = student
         .getValue()
-        .updateFirstName(newFirstName, EventBus.getInstance());
+        .updateFirstName(newFirstName, eventBus);
 
       // Assert
       expect(updatedStudent.getValue().firstName).toBe(newFirstName);
@@ -119,16 +129,16 @@ describe("Student", () => {
       const firstNameUpdatedHandler = jest.fn();
       const studentCreatedHandler = jest.fn();
 
-      EventBus.getInstance().subscribe("FirstNameUpdated", {
+      eventBus.subscribe("FirstNameUpdated", {
         handle: firstNameUpdatedHandler,
       });
-      EventBus.getInstance().subscribe("StudentCreated", {
+      eventBus.subscribe("StudentCreated", {
         handle: studentCreatedHandler,
       });
 
       // Act
       const student = Student.create({ firstName, lastName });
-      student.getValue().updateFirstName(newFirstName, EventBus.getInstance());
+      student.getValue().updateFirstName(newFirstName, eventBus);
 
       // Assert
       expect(firstNameUpdatedHandler).toHaveBeenCalledTimes(1);
@@ -145,7 +155,7 @@ describe("Student", () => {
       const student = Student.create({ firstName, lastName });
       const updatedStudent = student
         .getValue()
-        .updateFirstName(newFirstName, EventBus.getInstance());
+        .updateFirstName(newFirstName, eventBus);
 
       // Assert
       expect(updatedStudent.getError()).toEqual(
@@ -169,7 +179,7 @@ describe("Student", () => {
       const student = Student.create({ firstName, lastName });
       const updatedStudent = student
         .getValue()
-        .updateLastName(newLastName, EventBus.getInstance());
+        .updateLastName(newLastName, eventBus);
 
       // Assert
       expect(updatedStudent).toBeDefined();
@@ -186,16 +196,16 @@ describe("Student", () => {
       const lastNameUpdatedHandler = jest.fn();
       const studentCreatedHandler = jest.fn();
 
-      EventBus.getInstance().subscribe("LastNameUpdated", {
+      eventBus.subscribe("LastNameUpdated", {
         handle: lastNameUpdatedHandler,
       });
-      EventBus.getInstance().subscribe("StudentCreated", {
+      eventBus.subscribe("StudentCreated", {
         handle: studentCreatedHandler,
       });
 
       // Act
       const student = Student.create({ firstName, lastName });
-      student.getValue().updateLastName(newLastName, EventBus.getInstance());
+      student.getValue().updateLastName(newLastName, eventBus);
 
       // Assert
       expect(lastNameUpdatedHandler).toHaveBeenCalledTimes(1);
@@ -212,7 +222,7 @@ describe("Student", () => {
       const student = Student.create({ firstName, lastName });
       const updatedStudent = student
         .getValue()
-        .updateLastName(newLastName, EventBus.getInstance());
+        .updateLastName(newLastName, eventBus);
 
       // Assert
       expect(updatedStudent.getError()).toEqual(

@@ -1,5 +1,11 @@
 import { v4 as uuid } from "uuid";
 
+import { EventBus } from "../../../infra/event-bus";
+import { Result } from "../../../shared/result";
+import { AggregateRoot } from "../../core/aggregate-root";
+import { FirstNameUpdated } from "../events/first-name-updated";
+import { LastNameUpdated } from "../events/last-name-updated";
+import { StudentCreated } from "../events/student-created";
 import {
   Email,
   EmailValidationError,
@@ -8,13 +14,6 @@ import {
   LastName,
   LastNameValidationError,
 } from "../value-objects";
-import { Result } from "../../../shared/result";
-import { AggregateRoot } from "../../core/aggregate-root";
-import { DomainEvent } from "../../core/domain-event";
-import { StudentCreated } from "../events/student-created";
-import { FirstNameUpdated } from "../events/first-name-updated";
-import { LastNameUpdated } from "../events/last-name-updated";
-import { EventBus } from "../../../infra/event-bus";
 
 interface StudentProps {
   firstName: string;
