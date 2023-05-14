@@ -1,3 +1,4 @@
+import { Student } from "../../domain/student/core/student";
 import { EventBus } from "../../infra/event-bus";
 import { StudentManagementSystem } from "./student-management-system";
 
@@ -92,6 +93,24 @@ describe("StudentManagementSystem", () => {
         studentStudentManagementSystem.updateStudentFirstName(student!, "J");
 
       expect(updatedStudent).toBeNull();
+      expect(handler).not.toHaveBeenCalled();
+    });
+
+    it("should throw an Error if student does not exist", () => {
+      eventBus.subscribe("FirstNameUpdated", {
+        handle: handler,
+      });
+
+      const studentStudentManagementSystem: StudentManagementSystem =
+        new StudentManagementSystem(eventBus);
+
+      expect(() =>
+        studentStudentManagementSystem.updateStudentFirstName(
+          null as unknown as Student,
+          "Jane"
+        )
+      ).toThrowError("InternalServerError: Student does not exist");
+
       expect(handler).not.toHaveBeenCalled();
     });
   });
